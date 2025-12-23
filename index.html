@@ -23,8 +23,10 @@ body{
 }
 
 .hidden{display:none}
-.container{max-width:900px;margin:auto;padding:25px}
+.fade{animation:fade .6s ease}
+@keyframes fade{from{opacity:0;transform:translateY(20px)}to{opacity:1}}
 
+.container{max-width:900px;margin:auto;padding:25px}
 h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 
 .story{
@@ -33,111 +35,50 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
  border-radius:15px;
  margin:50px 0;
  box-shadow:0 10px 25px rgba(0,0,0,.3);
- transition:.5s;
 }
 
 .nav{
- display:flex;
- justify-content:center;
- gap:10px;
- flex-wrap:wrap;
- margin:25px 0;
- position:sticky;
- top:10px;
- z-index:5;
+ display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
+ position:sticky;top:10px;z-index:5;margin:20px 0;
 }
-
 .nav button{
- padding:10px 16px;
- border-radius:20px;
- border:none;
- cursor:pointer;
- background:rgba(255,255,255,.25);
- color:white;
- transition:.3s;
+ padding:10px 16px;border-radius:20px;border:none;
+ background:rgba(255,255,255,.25);color:white;cursor:pointer;
 }
-
-.nav button.active{
- background:white;
- color:var(--main);
- box-shadow:0 0 15px white;
-}
+.nav button.active{background:white;color:var(--main);box-shadow:0 0 15px white}
 
 #indicator{
- position:fixed;
- left:10px;
- top:50%;
- transform:translateY(-50%);
- background:rgba(255,255,255,.25);
- padding:10px;
- border-radius:12px;
- font-size:14px;
+ position:fixed;left:10px;top:50%;transform:translateY(-50%);
+ background:rgba(255,255,255,.25);padding:10px;border-radius:12px
 }
 
 .gallery-grid{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:15px;
- margin-top:20px;
+ display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:15px;margin-top:20px
 }
-
 .gallery-grid img{
- width:100%;
- border-radius:15px;
- cursor:pointer;
- transition:.4s;
- box-shadow:0 10px 25px rgba(0,0,0,.4);
+ width:100%;border-radius:15px;cursor:pointer;
+ box-shadow:0 10px 25px rgba(0,0,0,.4)
 }
-
-.gallery-grid img:hover{transform:scale(1.05)}
 
 #lightbox{
- position:fixed;
- inset:0;
- background:rgba(0,0,0,.85);
- display:none;
- align-items:center;
- justify-content:center;
- z-index:20;
+ position:fixed;inset:0;background:rgba(0,0,0,.85);
+ display:none;align-items:center;justify-content:center;z-index:20
 }
-
-#lightbox img{
- max-width:90%;
- max-height:90%;
- border-radius:15px;
-}
-
-.heart{
- position:fixed;
- bottom:-20px;
- width:18px;height:18px;
- background:pink;
- transform:rotate(45deg);
- animation:floatUp linear forwards;
-}
-.heart::before,.heart::after{
- content:'';
- position:absolute;
- width:18px;height:18px;
- background:pink;
- border-radius:50%;
-}
-.heart::before{top:-9px}
-.heart::after{left:9px}
-
-@keyframes floatUp{
- to{transform:translateY(-120vh) rotate(45deg);opacity:0}
-}
+#lightbox img{max-width:90%;max-height:90%;border-radius:15px}
 
 #musicControl{
- position:fixed;
- top:15px;
- right:15px;
- background:white;
- color:var(--main);
- padding:10px 14px;
- border-radius:10px;
- cursor:pointer;
+ position:fixed;top:15px;right:15px;
+ background:white;color:var(--main);padding:10px;border-radius:10px
+}
+
+#popup{
+ position:fixed;inset:0;background:rgba(0,0,0,.7);
+ display:flex;align-items:center;justify-content:center;z-index:30
+}
+#popup div{
+ background:white;color:#333;padding:25px;border-radius:15px;
+ max-width:300px;text-align:center
 }
 
 @media(max-width:600px){
@@ -146,12 +87,20 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 </style>
 </head>
 
-<body>
+<body oncontextmenu="return false">
+
+<!-- 💌 رسالة أول دخول -->
+<div id="popup" class="hidden">
+ <div>
+  <h2>💜 أهلاً بكِ</h2>
+  <p>هذا المكان صُنع لأنكِ أنتِ…</p>
+  <button onclick="closePopup()">دخول</button>
+ </div>
+</div>
 
 <!-- 🔐 تسجيل الدخول -->
 <div id="login" class="container">
 <h1>💜 موقعنا الخاص</h1>
-<p>أدخل كلمة السر</p>
 <input type="password" id="password"><br><br>
 <button onclick="checkPassword()">دخول</button>
 </div>
@@ -159,10 +108,10 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 <!-- 💖 المحتوى -->
 <div id="content" class="hidden container">
 
-<button onclick="logout()">🚪 تسجيل خروج</button>
+<button onclick="logout()">🚪 خروج</button>
 
 <h1>Our Love Story 💜</h1>
-<p>قصتنا… بلغتين، بقلب واحد</p>
+<p id="days"></p>
 
 <div class="nav">
 <button onclick="goTo('story')" id="btn-story">📖 قصتنا</button>
@@ -172,127 +121,105 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 
 <div id="indicator">📖 قصتنا</div>
 
-<div class="story" id="story">
+<div class="story fade" id="story">
 <h2>📖 قصتنا</h2>
-<p>هنا تكتب قصتكما 💜</p>
+<p>هنا تبدأ الحكاية 💜</p>
 </div>
 
-<div class="story hidden" id="gallery">
+<div class="story hidden fade" id="gallery">
 <h2>🖼️ صورنا</h2>
 <div class="gallery-grid">
-<img src="images/gallery/1.jpg" onclick="openImg(this)">
-<img src="images/gallery/2.jpg" onclick="openImg(this)">
-<img src="images/gallery/3.jpg" onclick="openImg(this)">
-<img src="images/gallery/4.jpg" onclick="openImg(this)">
-<img src="images/gallery/5.jpg" onclick="openImg(this)">
-<img src="images/gallery/6.jpg" onclick="openImg(this)">
-<img src="images/gallery/7.jpg" onclick="openImg(this)">
-<img src="images/gallery/8.jpg" onclick="openImg(this)">
-<img src="images/gallery/9.jpg" onclick="openImg(this)">
-<img src="images/gallery/10.jpg" onclick="openImg(this)">
+<img src="images/gallery/1.jpg" loading="lazy" onclick="openImg(this)">
+<img src="images/gallery/2.jpg" loading="lazy" onclick="openImg(this)">
+<img src="images/gallery/3.jpg" loading="lazy" onclick="openImg(this)">
 </div>
+<p style="margin-top:15px">💬 هذه الصورة غيّرت كل شيء…</p>
 </div>
 
-<div class="story hidden" id="reasons">
-<h2>💜 100 Reasons Why I Love You</h2>
-<ol id="reasonsList"></ol>
+<div class="story hidden fade" id="reasons">
+<h2>💜 سبب جديد</h2>
+<p id="reason"></p>
+<button onclick="nextReason()">➕ سبب آخر</button>
 </div>
 
 </div>
 
-<!-- 🔍 تكبير الصور -->
 <div id="lightbox" onclick="this.style.display='none'">
 <img id="lightboxImg">
 </div>
 
-<!-- 🎵 موسيقى -->
 <div id="musicControl" onclick="toggleMusic()">🎵</div>
 <audio id="bgMusic" loop>
 <source src="music/kol-el-qassayed.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-/* ===== عناصر أساسية ===== */
 const PASSWORD="anoji123";
 const login=document.getElementById("login");
 const content=document.getElementById("content");
 const indicator=document.getElementById("indicator");
 const names={story:"📖 قصتنا",gallery:"🖼️ صورنا",reasons:"💜 الأسباب"};
 
-/* ===== تسجيل الدخول ===== */
 function checkPassword(){
  if(password.value===PASSWORD){
   login.style.display="none";
   content.classList.remove("hidden");
-  localStorage.setItem("logged","1");
-  initView();
+  init();
  }
 }
 
-if(localStorage.getItem("logged")){
- login.style.display="none";
- content.classList.remove("hidden");
- initView();
-}
-
-function logout(){
- localStorage.removeItem("logged");
- location.reload();
-}
-
-/* ===== تهيئة العرض ===== */
-function initView(){
+function init(){
  document.querySelectorAll(".story").forEach(s=>s.classList.add("hidden"));
- document.getElementById("story").classList.remove("hidden");
- document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
- document.getElementById("btn-story").classList.add("active");
- indicator.textContent = names.story;
+ goTo("story");
+ if(!localStorage.getItem("seen")){
+  popup.classList.remove("hidden");
+ }
 }
 
-/* ===== تنقل ===== */
+function closePopup(){
+ popup.classList.add("hidden");
+ localStorage.setItem("seen","1");
+}
+
+function logout(){localStorage.clear();location.reload();}
+
 function goTo(id){
  document.querySelectorAll(".story").forEach(s=>s.classList.add("hidden"));
- const section=document.getElementById(id);
- section.classList.remove("hidden");
- section.scrollIntoView({behavior:"smooth"});
+ const sec=document.getElementById(id);
+ sec.classList.remove("hidden");
+ indicator.textContent=names[id];
  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
  document.getElementById("btn-"+id).classList.add("active");
- indicator.textContent = names[id];
 }
 
-/* ===== موسيقى ===== */
-const music=document.getElementById("bgMusic");
-let playing=false;
-function toggleMusic(){
- playing?music.pause():music.play();
- playing=!playing;
-}
-
-/* ===== قلوب ===== */
-setInterval(()=>{
- const h=document.createElement("div");
- h.className="heart";
- h.style.left=Math.random()*100+"vw";
- h.style.animationDuration=(4+Math.random()*4)+"s";
- document.body.appendChild(h);
- setTimeout(()=>h.remove(),8000);
-},600);
-
-/* ===== صور ===== */
 function openImg(img){
- document.getElementById("lightboxImg").src=img.src;
- document.getElementById("lightbox").style.display="flex";
+ lightboxImg.src=img.src;
+ lightbox.style.display="flex";
 }
 
-/* ===== أسباب ===== */
-["لأنك عالمي","Because you are my peace","لأن ضحكتك تسعدني"].forEach(r=>{
- const li=document.createElement("li");
- li.textContent=r;
- reasonsList.appendChild(li);
-});
+const reasons=[
+"لأنك عالمي 💜",
+"Because you are my peace",
+"لأن ضحكتك تسعدني",
+"Because you chose me"
+];
+let i=0;
+function nextReason(){
+ reason.textContent=reasons[i++%reasons.length];
+}
+nextReason();
+
+const start=new Date("2023-01-01");
+const days=Math.floor((Date.now()-start)/86400000);
+document.getElementById("days").textContent=`مرّ على قصتنا ${days} يومًا 💜`;
+
+let playing=false;
+function toggleMusic(){playing?bgMusic.pause():bgMusic.play();playing=!playing;}
 </script>
 
 </body>
 </html>
+
+
 
 
