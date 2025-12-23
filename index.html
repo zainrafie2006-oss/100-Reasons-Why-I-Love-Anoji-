@@ -227,9 +227,11 @@ h1,h2{font-family:'Dancing Script',cursive}
 <div id="lang" onclick="toggleLang()">🌍</div>
 <div id="musicBtn" onclick="toggleMusic()">🎵</div>
 
-<audio id="bgMusic" loop>
- <source src="music/kol-el-qassayed.mp3" type="audio/mpeg">
-</audio>
+<audio id="bgMusic"></audio>
+
+<!-- زر تغيير الأغنية -->
+<div id="nextSongBtn" onclick="nextSong()">⏭️</div>
+
 
 <div class="container hidden" id="content">
 
@@ -414,20 +416,45 @@ const EN = [
 
 let ar=true;
 
-/* ===== Music ===== */
-const music=document.getElementById("bgMusic");
-const musicBtn=document.getElementById("musicBtn");
-let playing=false;
+/* ===== Music Playlist ===== */
+const music = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+
+const playlist = [
+ "music/aaa.mp3",
+ "music/bbb.mp3",
+ "music/ccc.mp3",
+ "music/ddd.mp3",
+ "music/eee.mp3"
+];
+
+let currentSong = 0;
+let playing = false;
+
+// تحميل أول أغنية
+music.src = playlist[currentSong];
+
 function toggleMusic(){
  if(!playing){
   music.play();
-  musicBtn.textContent="⏸️";
+  musicBtn.textContent = "⏸️";
  }else{
   music.pause();
-  musicBtn.textContent="🎵";
+  musicBtn.textContent = "🎵";
  }
- playing=!playing;
+ playing = !playing;
 }
+
+// تغيير الأغنية
+function nextSong(){
+ currentSong = (currentSong + 1) % playlist.length;
+ music.src = playlist[currentSong];
+ if(playing){
+  music.play();
+ }
+}
+
+music.addEventListener("ended", nextSong);
 
 /* ===== Gallery ===== */
 let index = 0;
@@ -499,6 +526,7 @@ renderReasons();
 
 </body>
 </html>
+
 
 
 
