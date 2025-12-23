@@ -193,7 +193,7 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 </div>
 </div>
 
-<div class="story" id="reasons">
+<div class="story hidden" id="reasons">
 <h2>💜 100 Reasons Why I Love You</h2>
 <ol id="reasonsList"></ol>
 </div>
@@ -212,21 +212,27 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 </audio>
 
 <script>
+/* ===== عناصر أساسية ===== */
 const PASSWORD="anoji123";
 const login=document.getElementById("login");
 const content=document.getElementById("content");
+const indicator=document.getElementById("indicator");
+const names={story:"📖 قصتنا",gallery:"🖼️ صورنا",reasons:"💜 الأسباب"};
 
+/* ===== تسجيل الدخول ===== */
 function checkPassword(){
  if(password.value===PASSWORD){
   login.style.display="none";
   content.classList.remove("hidden");
   localStorage.setItem("logged","1");
+  initView();
  }
 }
 
 if(localStorage.getItem("logged")){
  login.style.display="none";
  content.classList.remove("hidden");
+ initView();
 }
 
 function logout(){
@@ -234,6 +240,27 @@ function logout(){
  location.reload();
 }
 
+/* ===== تهيئة العرض ===== */
+function initView(){
+ document.querySelectorAll(".story").forEach(s=>s.classList.add("hidden"));
+ document.getElementById("story").classList.remove("hidden");
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+ document.getElementById("btn-story").classList.add("active");
+ indicator.textContent = names.story;
+}
+
+/* ===== تنقل ===== */
+function goTo(id){
+ document.querySelectorAll(".story").forEach(s=>s.classList.add("hidden"));
+ const section=document.getElementById(id);
+ section.classList.remove("hidden");
+ section.scrollIntoView({behavior:"smooth"});
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+ document.getElementById("btn-"+id).classList.add("active");
+ indicator.textContent = names[id];
+}
+
+/* ===== موسيقى ===== */
 const music=document.getElementById("bgMusic");
 let playing=false;
 function toggleMusic(){
@@ -241,6 +268,7 @@ function toggleMusic(){
  playing=!playing;
 }
 
+/* ===== قلوب ===== */
 setInterval(()=>{
  const h=document.createElement("div");
  h.className="heart";
@@ -250,38 +278,14 @@ setInterval(()=>{
  setTimeout(()=>h.remove(),8000);
 },600);
 
-const indicator=document.getElementById("indicator");
-const names={story:"📖 قصتنا",gallery:"🖼️ صورنا",reasons:"💜 الأسباب"};
-
-function goTo(id){
-
- // إخفاء كل الأقسام
- document.querySelectorAll(".story").forEach(sec=>{
-   sec.classList.add("hidden");
- });
-
- // إظهار القسم المطلوب
- const section = document.getElementById(id);
- section.classList.remove("hidden");
-
- // انتقال ناعم
- section.scrollIntoView({behavior:"smooth"});
-
- // تفعيل الزر
- document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
- document.getElementById("btn-"+id).classList.add("active");
-
- // تحديث المؤشر
- indicator.textContent = names[id];
-}
-
+/* ===== صور ===== */
 function openImg(img){
  document.getElementById("lightboxImg").src=img.src;
  document.getElementById("lightbox").style.display="flex";
 }
 
-["لأنك عالمي","Because you are my peace","لأن ضحكتك تسعدني"]
-.forEach(r=>{
+/* ===== أسباب ===== */
+["لأنك عالمي","Because you are my peace","لأن ضحكتك تسعدني"].forEach(r=>{
  const li=document.createElement("li");
  li.textContent=r;
  reasonsList.appendChild(li);
@@ -290,4 +294,5 @@ function openImg(img){
 
 </body>
 </html>
+
 
