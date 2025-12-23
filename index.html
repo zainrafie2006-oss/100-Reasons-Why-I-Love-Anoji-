@@ -341,60 +341,194 @@ function toggleMusic(){
  playing=!playing;
 }
 
-/* 🌍 100 سبب مختلفين */
+/* 🌍 100 Reasons – Arabic & English (REAL) */
+
 const AR = [
-"لأنك سعادتي","لأنك أماني","لأنك اختياري","لأنك الأمان","لأنك قلبي","لأنك روحي",
-"لأنك راحتي","لأنك ضحكتي","لأنك عالمي","لأنك حلمي","لأنك دفئي","لأنك حضني",
-"لأنك سندي","لأنك طمأنينتي","لأنك نجاتي","لأنك أملي","لأنك شغفي","لأنك قوتي",
-"لأنك نبضي","لأنك حبيبتي","لأنك تكمّلني","لأنك تفهمني","لأنك تشبهني",
-"لأنك تشاركني","لأنك تسمعني","لأنك تحتويّني","لأنك تصدّقني",
-"لأنك تطمّنني","لأنك تحميني","لأنك تفرحني","لأنك صادقة","لأنك حنونة",
-"لأنك طيبة","لأنك دافئة","لأنك قريبة","لأنك حقيقية","لأنك ناعمة",
-"لأنك قوية","لأنك جميلة","لأنك أنثى بكل معنى","لأنك تضحكين بقلبي",
-"لأنك تغيّرين مزاجي للأحسن","لأنك تخففين تعبي","لأنك تهوّنين عليّ",
-"لأنك تزرعين الأمل","لأنك تعطيني معنى","لأنك تحيين أيامي",
-"لأنك تلوني عالمي","لأنك تنسيني كل شي","لأنك أهم شي",
-"لأنك تحبينني كما أنا","لأنك لا تشبهين أحد","لأنك اختيار قلبي",
-"لأنك راحة روحي","لأنك وطن الشعور","لأنك صدفة جميلة","لأنك نعمة",
-"لأنك دعوة مستجابة","لأنك حلم تحقق","لأنك قدري","لأنك البداية الحلوة",
-"لأنك الاستمرار","لأنك النهاية اللي أتمناها","لأنك المستقبل","لأنك اليوم",
-"لأنك الغد","لأنك كل مرة أبتسم","لأنك كل مرة أهدأ",
-"لأنك كل مرة أحب","لأنك كل شيء 💜"
+"لأنك سعادتي",
+"لأنك أماني",
+"لأنك اختياري",
+"لأنك الأمان",
+"لأنك قلبي",
+"لأنك روحي",
+"لأنك راحتي",
+"لأنك ضحكتي",
+"لأنك عالمي",
+"لأنك حلمي",
+"لأنك دفئي",
+"لأنك حضني",
+"لأنك سندي",
+"لأنك طمأنينتي",
+"لأنك نجاتي",
+"لأنك أملي",
+"لأنك شغفي",
+"لأنك قوتي",
+"لأنك نبضي",
+"لأنك حبيبتي",
+
+"لأنك تكمّلني",
+"لأنك تفهمني",
+"لأنك تشبهني",
+"لأنك تشاركني",
+"لأنك تسمعني",
+"لأنك تحتويّني",
+"لأنك تصدّقني",
+"لأنك تطمّنني",
+"لأنك تحميني",
+"لأنك تفرحني",
+
+"لأنك صادقة",
+"لأنك حنونة",
+"لأنك طيبة",
+"لأنك دافئة",
+"لأنك قريبة",
+"لأنك حقيقية",
+"لأنك ناعمة",
+"لأنك قوية",
+"لأنك جميلة",
+"لأنك أنثى بكل معنى",
+
+"لأنك تغيّرين مزاجي للأحسن",
+"لأنك تخففين تعبي",
+"لأنك تهوّنين عليّ",
+"لأنك تزرعين الأمل",
+"لأنك تعطيني معنى",
+"لأنك تحيين أيامي",
+"لأنك تلوني عالمي",
+"لأنك تنسيني كل شي",
+"لأنك أهم شي",
+"لأنك كل شيء",
+
+"لأنك تحبينني كما أنا",
+"لأنك لا تشبهين أحد",
+"لأنك اختيار قلبي",
+"لأنك راحة روحي",
+"لأنك وطن الشعور",
+"لأنك صدفة جميلة",
+"لأنك نعمة",
+"لأنك دعوة مستجابة",
+"لأنك حلم تحقق",
+"لأنك قدري",
+
+"لأنك البداية الحلوة",
+"لأنك الاستمرار",
+"لأنك المستقبل",
+"لأنك اليوم",
+"لأنك الغد",
+"لأنك تفاصيل حياتي",
+"لأنك أجمل ما حدث لي",
+"لأنك معنى الحب",
+"لأنك نبض أيامي",
+"لأنك حياتي 💜"
 ];
 
-const EN = AR.map(t=>t.replace("لأنك","Because you are"));
+const EN = [
+"Because you are my happiness",
+"Because you are my wish",
+"Because you are my choice",
+"Because you are my safety",
+"Because you are my heart",
+"Because you are my soul",
+"Because you are my comfort",
+"Because you are my smile",
+"Because you are my world",
+"Because you are my dream",
+"Because you are my warmth",
+"Because you are my hug",
+"Because you are my support",
+"Because you are my peace",
+"Because you are my rescue",
+"Because you are my hope",
+"Because you are my passion",
+"Because you are my strength",
+"Because you are my heartbeat",
+"Because you are my love",
 
-let ar=true;
+"Because you complete me",
+"Because you understand me",
+"Because you are just like me",
+"Because you share everything with me",
+"Because you listen to me",
+"Because you hold me",
+"Because you believe in me",
+"Because you reassure me",
+"Because you protect me",
+"Because you make me happy",
+
+"Because you are honest",
+"Because you are kind",
+"Because you are gentle",
+"Because you are warm",
+"Because you are close to my heart",
+"Because you are real",
+"Because you are soft",
+"Because you are strong",
+"Because you are beautiful",
+"Because you are truly feminine",
+
+"Because you change my mood for the better",
+"Because you ease my tiredness",
+"Because you make things lighter",
+"Because you plant hope in me",
+"Because you give my life meaning",
+"Because you bring life to my days",
+"Because you color my world",
+"Because you make me forget everything",
+"Because you are the most important thing",
+"Because you are everything",
+
+"Because you love me as I am",
+"Because you are one of a kind",
+"Because you are my heart’s choice",
+"Because you are my soul’s rest",
+"Because you are my emotional home",
+"Because you are a beautiful coincidence",
+"Because you are a blessing",
+"Because you are an answered prayer",
+"Because you are a dream come true",
+"Because you are my destiny",
+
+"Because you are the sweet beginning",
+"Because you are the continuation",
+"Because you are the future",
+"Because you are today",
+"Because you are tomorrow",
+"Because you are the details of my life",
+"Because you are the best thing that happened to me",
+"Because you are the meaning of love",
+"Because you are the pulse of my days",
+"Because you are my life 💜"
+];
+
+let ar = true;
+
 function renderReasons(){
  reasonsList.innerHTML="";
- (ar?AR:EN).forEach(r=>{
-  const li=document.createElement("li");
-  li.textContent=r;
+ (ar ? AR : EN).forEach(r=>{
+  const li = document.createElement("li");
+  li.textContent = r;
   reasonsList.appendChild(li);
  });
 }
 
-function toggleLang(){
- ar=!ar;
- storyText.textContent=ar?
- "هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜":
- "Here begins our story… a simple moment that became a lifetime 💜";
- dL.textContent=ar?"يوم":"Days";
- hL.textContent=ar?"ساعة":"Hours";
- mL.textContent=ar?"دقيقة":"Minutes";
- n1.textContent=ar?"📖 قصتنا":"📖 Our Story";
- n2.textContent=ar?"🖼️ صورنا":"🖼️ Our Photos";
- n3.textContent=ar?"💜 الأسباب":"💜 Reasons";
- c1.textContent=ar?"💜 أهلاً بكِ":"💜 Welcome";
- c2.textContent=ar?"هذا المكان صُنع لأنكِ أنتِ":"This place was made for you";
- c3.textContent=ar?"وهذه قصتنا…":"And this is our story…";
- renderReasons();
-}
+
 renderReasons();
+ function toggleLang(){
+ ar = !ar;
+ renderReasons();
+
+ // تغيير اتجاه الصفحة
+ document.documentElement.lang = ar ? "ar" : "en";
+ document.body.dir = ar ? "rtl" : "ltr";
+
+ // تغيير العناوين الأساسية (بشكل ناعم)
+ title.textContent = ar ? "Our Love Story 💜" : "Our Love Story 💜";
+}
+
 </script>
 
 </body>
 </html>
+
 
 
 
