@@ -9,6 +9,7 @@
 
 <style>
 :root{
+ --main:#c084fc;
  --glass:rgba(255,255,255,.18);
 }
 body{
@@ -30,7 +31,6 @@ body{
 .container{max-width:900px;margin:auto;padding:20px}
 h1,h2{font-family:'Dancing Script',cursive}
 
-/* Login */
 #login{
  position:fixed;inset:0;
  background:rgba(0,0,0,.85);
@@ -43,7 +43,6 @@ h1,h2{font-family:'Dancing Script',cursive}
  max-width:300px;
 }
 
-/* Cinema */
 #cinema{
  position:fixed;inset:0;
  background:rgba(0,0,0,.85);
@@ -52,78 +51,40 @@ h1,h2{font-family:'Dancing Script',cursive}
 }
 #cinema p{
  font-size:20px;margin:12px 0;
- opacity:0;animation:fade 1s forwards;
+ opacity:0;
+ animation:fade 1s forwards;
 }
 #cinema p:nth-child(1){animation-delay:.5s}
 #cinema p:nth-child(2){animation-delay:2s}
 #cinema p:nth-child(3){animation-delay:3.5s}
 @keyframes fade{to{opacity:1}}
 
-/* Counter */
 #counter{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 .timeBox{background:rgba(255,255,255,.25);padding:12px 18px;border-radius:14px}
 
-/* Nav */
 .nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
 .nav button{
  padding:10px 16px;border-radius:20px;border:none;
- background:rgba(255,255,255,.25);
- color:white;cursor:pointer
+ background:rgba(255,255,255,.25);color:white;cursor:pointer
 }
 .nav button.active{background:white;color:#6b21a8}
 
-/* Sections */
 .story{
  background:var(--glass);
  padding:20px;border-radius:18px;margin:30px 0;
- animation:sectionFade .5s ease
+ animation:sectionFade .6s ease;
 }
 @keyframes sectionFade{
  from{opacity:0;transform:translateY(15px)}
  to{opacity:1}
 }
 
-/* Slider */
-.slider{position:relative;overflow:hidden;border-radius:18px;height:260px}
-.slides{display:flex;height:100%;transition:.5s}
-.slides img{width:100%;object-fit:cover;cursor:pointer}
-.arrow{
- position:absolute;top:50%;transform:translateY(-50%);
- background:rgba(0,0,0,.5);
- border:none;color:white;font-size:22px;
- padding:8px 12px;border-radius:50%;cursor:pointer
+#lang{
+ position:fixed;top:15px;left:15px;
+ background:white;color:#333;
+ padding:8px 12px;border-radius:10px;
+ cursor:pointer;z-index:50;
 }
-.arrow.left{left:10px}
-.arrow.right{right:10px}
-
-/* Modal */
-#photoModal{
- position:fixed;inset:0;
- background:rgba(0,0,0,.85);
- display:none;align-items:center;justify-content:center;
- z-index:400
-}
-#photoModal .frame{
- position:relative;background:#111;
- padding:15px;border-radius:20px;max-width:600px;width:85%
-}
-#photoModal img{width:100%;border-radius:15px}
-.modalArrow{
- position:absolute;top:50%;transform:translateY(-50%);
- background:rgba(255,255,255,.2);
- border:none;color:white;font-size:26px;
- padding:8px 14px;border-radius:50%;cursor:pointer
-}
-.modalArrow.left{left:-10px}
-.modalArrow.right{right:-10px}
-
-/* Buttons */
-#musicBtn,#lang{
- position:fixed;background:white;color:#333;
- padding:10px;border-radius:50%;cursor:pointer;z-index:50
-}
-#musicBtn{bottom:15px;right:15px}
-#lang{top:15px;left:15px}
 </style>
 </head>
 
@@ -147,11 +108,6 @@ h1,h2{font-family:'Dancing Script',cursive}
 </div>
 
 <div id="lang" onclick="toggleLang()">🌍</div>
-<div id="musicBtn" onclick="toggleMusic()">🎵</div>
-
-<audio id="music" loop>
- <source src="music/kol-el-qassayed.mp3">
-</audio>
 
 <div class="container hidden" id="content">
 
@@ -165,31 +121,11 @@ h1,h2{font-family:'Dancing Script',cursive}
 
 <div class="nav">
  <button class="active" onclick="show('story',this)" id="n1">📖 قصتنا</button>
- <button onclick="show('gallery',this)" id="n2">🖼️ صورنا</button>
  <button onclick="show('reasons',this)" id="n3">💜 الأسباب</button>
 </div>
 
 <div class="story" id="story">
  <p id="storyText">هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜</p>
-</div>
-
-<div class="story hidden" id="gallery">
- <div class="slider">
-  <div class="slides" id="slides">
-   <img src="images/gallery/1.jpg" onclick="openPhoto(0)">
-   <img src="images/gallery/2.jpg" onclick="openPhoto(1)">
-   <img src="images/gallery/3.jpg" onclick="openPhoto(2)">
-   <img src="images/gallery/4.jpg" onclick="openPhoto(3)">
-   <img src="images/gallery/5.jpg" onclick="openPhoto(4)">
-   <img src="images/gallery/6.jpg" onclick="openPhoto(5)">
-   <img src="images/gallery/7.jpg" onclick="openPhoto(6)">
-   <img src="images/gallery/8.jpg" onclick="openPhoto(7)">
-   <img src="images/gallery/9.jpg" onclick="openPhoto(8)">
-   <img src="images/gallery/10.jpg" onclick="openPhoto(9)">
-  </div>
-  <button class="arrow left" onclick="prev()">❮</button>
-  <button class="arrow right" onclick="next()">❯</button>
- </div>
 </div>
 
 <div class="story hidden" id="reasons">
@@ -198,16 +134,7 @@ h1,h2{font-family:'Dancing Script',cursive}
 
 </div>
 
-<div id="photoModal" onclick="closePhoto()">
- <div class="frame" onclick="event.stopPropagation()">
-  <button class="modalArrow left" onclick="modalPrev()">❮</button>
-  <img id="modalImg">
-  <button class="modalArrow right" onclick="modalNext()">❯</button>
- </div>
-</div>
-
 <script>
-/* PASSWORD */
 const PASSWORD="anoji123";
 function checkPassword(){
  if(password.value===PASSWORD){
@@ -218,16 +145,14 @@ function checkPassword(){
  }
 }
 
-/* COUNTER */
 const start=new Date(2025,5,29,2,34);
 setInterval(()=>{
- let d=Math.floor((Date.now()-start)/60000);
+ let d=Math.floor((new Date()-start)/60000);
  days.textContent=Math.floor(d/1440);
  hours.textContent=Math.floor(d%1440/60);
  minutes.textContent=d%60;
 },1000);
 
-/* NAV */
 function show(id,b){
  document.querySelectorAll(".story").forEach(s=>s.classList.add("hidden"));
  document.getElementById(id).classList.remove("hidden");
@@ -235,41 +160,49 @@ function show(id,b){
  b.classList.add("active");
 }
 
-/* SLIDER */
-let i=0;
-function update(){slides.style.transform=`translateX(-${i*100}%)`}
-function next(){i=(i+1)%10;update()}
-function prev(){i=(i+9)%10;update()}
+/* ========= 100 REASONS ========= */
 
-/* MODAL */
-let modalIndex=0;
-function openPhoto(x){
- modalIndex=x;
- modalImg.src=`images/gallery/${x+1}.jpg`;
- photoModal.style.display="flex";
-}
-function modalNext(){modalIndex=(modalIndex+1)%10;openPhoto(modalIndex)}
-function modalPrev(){modalIndex=(modalIndex+9)%10;openPhoto(modalIndex)}
-function closePhoto(){photoModal.style.display="none"}
+const AR = [
+"لأنك سعادتي","لأنك أماني","لأنك اختياري","لأنك الأمان","لأنك قلبي",
+"لأنك روحي","لأنك راحتي","لأنك ضحكتي","لأنك عالمي","لأنك حلمي",
+"لأنك دفئي","لأنك حضني","لأنك سندي","لأنك طمأنينتي","لأنك نجاتي",
+"لأنك أملي","لأنك شغفي","لأنك قوتي","لأنك نبضي","لأنك حبيبتي",
+"لأنك تفهمني دون كلام","لأنك تشعرين بي قبل أن أتكلم","لأنك تكمّلني","لأنك تشبهين روحي","لأنك أقرب الناس لقلبي",
+"لأنك صدقي الوحيد","لأنك ملجأي","لأنك أمان أيامي","لأنك هدوئي","لأنك سلامي الداخلي",
+"لأنك ضوء طريقي","لأنك حياة قلبي","لأنك نبض مشاعري","لأنك حكاية عمري","لأنك الأجمل في حياتي",
+"لأنك الأصدق","لأنك الأحن","لأنك الألطف","لأنك الأقرب","لأنك معنى الحب",
+"لأنك وطن قلبي","لأنك راحة روحي","لأنك بداية الخير","لأنك نهاية التعب","لأنك اختصار السعادة",
+"لأنك نعمة","لأنك دعوة مستجابة","لأنك صدفة غيرت حياتي","لأنك أجمل ما حدث لي","لأنك سبب ابتسامتي",
+"لأنك حلم تحقق","لأنك مستقبلي","لأنك حاضري","لأنك أيامي","لأنك كل لحظاتي",
+"لأنك عالمي الخاص","لأنك لا تُعوّضين","لأنك لا تتكررين","لأنك مختلفة عن الجميع","لأنك اختيار قلبي الدائم",
+"لأنك حبي الأول","لأنك حبي الأخير","لأنك روحي حين أتعب","لأنك قلبي حين أضيع","لأنك الحياة حين تضيق",
+"لأنك الأمان حين أخاف","لأنك دفء أيامي","لأنك تفاصيل سعادتي","لأنك نبض أيامي","لأنك حياتي 💜"
+];
 
-/* MUSIC */
-let playing=false;
-function toggleMusic(){
- playing?music.pause():music.play();
- playing=!playing;
-}
 
-/* LANG + 100 REASONS */
-const AR=[/* 100 عنصر */];
-const EN=[/* 100 عنصر */];
-
-/* (تم اختصار المصفوفات هنا لتجنب تكرار – النسخة التي عندك كاملة 100/100) */
+const EN = [
+"Because you are my happiness","Because you are my wish","Because you are my choice","Because you are my safety","Because you are my heart",
+"Because you are my soul","Because you are my comfort","Because you are my smile","Because you are my world","Because you are my dream",
+"Because you are my warmth","Because you are my hug","Because you are my support","Because you are my peace","Because you are my rescue",
+"Because you are my hope","Because you are my passion","Because you are my strength","Because you are my heartbeat","Because you are my love",
+"Because you understand me without words","Because you feel me before I speak","Because you complete me","Because you feel like my soul","Because you are closest to my heart",
+"Because you are my only truth","Because you are my shelter","Because you are my daily safety","Because you calm me","Because you are my inner peace",
+"Because you light my way","Because you are my heart’s life","Because you are my emotions","Because you are my life story","Because you are the most beautiful part of my life",
+"Because you are honest","Because you are gentle","Because you are kind","Because you are loving","Because you are the meaning of love",
+"Because you feel like home","Because you are my soul’s comfort","Because you bring goodness","Because you end my tiredness","Because you are pure happiness",
+"Because you are a blessing","Because you are my answered prayer","Because you changed my life","Because you are the best thing that happened to me","Because you make me smile",
+"Because you are a dream come true","Because you are my future","Because you are my present","Because you are my days","Because you are every moment",
+"Because you are my private world","Because you are irreplaceable","Because you are one of a kind","Because you are different from everyone","Because you are my forever choice",
+"Because you are my first love","Because you are my last love","Because you heal my soul","Because you calm my heart","Because you make life easier",
+"Because you protect me","Because you warm my days","Because you are my happiness details","Because you are my daily smile","Because you are my life 💜"
+];
 
 let ar=true;
+
 function renderReasons(){
  reasonsList.innerHTML="";
  (ar?AR:EN).forEach(r=>{
-  let li=document.createElement("li");
+  const li=document.createElement("li");
   li.textContent=r;
   reasonsList.appendChild(li);
  });
@@ -280,21 +213,18 @@ function toggleLang(){
  document.documentElement.lang=ar?"ar":"en";
  document.body.dir=ar?"rtl":"ltr";
 
- loginTitle.textContent=ar?"💜 موقعنا الخاص":"💜 Our Private Place";
- loginText.textContent=ar?"أدخل كلمة السر":"Enter the password";
- loginBtn.textContent=ar?"دخول":"Login";
-
+ title.textContent="Our Love Story 💜";
  n1.textContent=ar?"📖 قصتنا":"📖 Our Story";
- n2.textContent=ar?"🖼️ صورنا":"🖼️ Our Photos";
  n3.textContent=ar?"💜 الأسباب":"💜 Reasons";
-
+ storyText.textContent=ar?
+ "هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜":
+ "Here begins our story… a small moment that became a lifetime 💜";
  dL.textContent=ar?"يوم":"Days";
  hL.textContent=ar?"ساعة":"Hours";
  mL.textContent=ar?"دقيقة":"Minutes";
-
- storyText.textContent=ar
- ?"هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜"
- :"Here our story begins… from a simple moment that became a lifetime 💜";
+ loginTitle.textContent=ar?"💜 موقعنا الخاص":"💜 Our Private Place";
+ loginText.textContent=ar?"أدخل كلمة السر":"Enter the password";
+ loginBtn.textContent=ar?"دخول":"Enter";
 
  renderReasons();
 }
@@ -304,6 +234,8 @@ renderReasons();
 
 </body>
 </html>
+
+
 
 
 
