@@ -12,6 +12,8 @@
  --main:#c084fc;
  --glass:rgba(255,255,255,.18);
 }
+
+/* ===== Global ===== */
 body{
  margin:0;
  font-family:"Segoe UI",Tahoma,sans-serif;
@@ -27,10 +29,12 @@ body{
  50%{background-position:100% 50%}
  100%{background-position:0% 50%}
 }
+
 .hidden{display:none}
 .container{max-width:900px;margin:auto;padding:20px}
 h1,h2{font-family:'Dancing Script',cursive}
 
+/* ===== Login ===== */
 #login{
  position:fixed;inset:0;
  background:rgba(0,0,0,.85);
@@ -43,6 +47,7 @@ h1,h2{font-family:'Dancing Script',cursive}
  max-width:300px;
 }
 
+/* ===== Cinema ===== */
 #cinema{
  position:fixed;inset:0;
  background:rgba(0,0,0,.85);
@@ -59,9 +64,11 @@ h1,h2{font-family:'Dancing Script',cursive}
 #cinema p:nth-child(3){animation-delay:3.5s}
 @keyframes fade{to{opacity:1}}
 
+/* ===== Counter ===== */
 #counter{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 .timeBox{background:rgba(255,255,255,.25);padding:12px 18px;border-radius:14px}
 
+/* ===== Nav ===== */
 .nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
 .nav button{
  padding:10px 16px;border-radius:20px;border:none;
@@ -69,6 +76,7 @@ h1,h2{font-family:'Dancing Script',cursive}
 }
 .nav button.active{background:white;color:#6b21a8}
 
+/* ===== Sections ===== */
 .story{
  background:var(--glass);
  padding:20px;border-radius:18px;margin:30px 0;
@@ -79,17 +87,88 @@ h1,h2{font-family:'Dancing Script',cursive}
  to{opacity:1}
 }
 
+/* ===== Language Button ===== */
 #lang{
  position:fixed;top:15px;left:15px;
  background:white;color:#333;
  padding:8px 12px;border-radius:10px;
  cursor:pointer;z-index:50;
 }
+
+/* ===== Music Button ===== */
+#musicBtn{
+ position:fixed;
+ bottom:20px;
+ right:20px;
+ width:55px;
+ height:55px;
+ border-radius:50%;
+ background:rgba(255,255,255,.9);
+ color:#6b21a8;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:24px;
+ cursor:pointer;
+ z-index:100;
+ box-shadow:0 8px 20px rgba(0,0,0,.35);
+}
+
+/* ===== Gallery ===== */
+.slider{
+ position:relative;
+ overflow:hidden;
+ border-radius:18px;
+}
+.slides{
+ display:flex;
+ transition:transform .5s ease;
+}
+.slides img{
+ width:100%;
+ max-height:420px;
+ object-fit:cover;
+ cursor:pointer;
+}
+
+/* arrows */
+.arrow{
+ position:absolute;
+ top:50%;
+ transform:translateY(-50%);
+ background:rgba(0,0,0,.5);
+ color:white;
+ border:none;
+ font-size:28px;
+ padding:8px 14px;
+ cursor:pointer;
+ border-radius:50%;
+ z-index:10;
+}
+.arrow.left{left:10px}
+.arrow.right{right:10px}
+
+/* ===== Lightbox ===== */
+#lightbox{
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.9);
+ display:none;
+ align-items:center;
+ justify-content:center;
+ z-index:500;
+}
+#lightbox img{
+ max-width:90%;
+ max-height:90%;
+ border-radius:18px;
+}
 </style>
 </head>
 
 <body>
 
+<!-- Login -->
 <div id="login">
  <div class="box">
   <h2 id="loginTitle">💜 موقعنا الخاص</h2>
@@ -99,15 +178,21 @@ h1,h2{font-family:'Dancing Script',cursive}
  </div>
 </div>
 
+<!-- Cinema -->
 <div id="cinema" class="hidden">
  <div>
-  <p id="c1">💜 يقبرنيييي هالشكللل</p>
-  <p id="c2">نور الموقع يا قلبيييي</p>
-  <p id="c3">انشالله يعجبك يا بوبو</p>
+  <p>💜 يقبرنيييي هالشكللل</p>
+  <p>💜 نوّر الموقع يا قلبيييي</p>
+  <p>💜💜💜انشالله يعجبك يا بوبو</p>
  </div>
 </div>
 
 <div id="lang" onclick="toggleLang()">🌍</div>
+<div id="musicBtn" onclick="toggleMusic()">🎵</div>
+
+<audio id="bgMusic" loop>
+ <source src="music/kol-el-qassayed.mp3" type="audio/mpeg">
+</audio>
 
 <div class="container hidden" id="content">
 
@@ -119,28 +204,31 @@ h1,h2{font-family:'Dancing Script',cursive}
  <div class="timeBox"><span id="minutes">0</span><div id="mL">دقيقة</div></div>
 </div>
 
- <div class="nav">
+<div class="nav">
  <button class="active" onclick="show('story',this)" id="n1">📖 قصتنا</button>
  <button onclick="show('gallery',this)" id="n2">🖼️ صورنا</button>
  <button onclick="show('reasons',this)" id="n3">💜 الأسباب</button>
 </div>
 
 <div class="story" id="story">
- <p id="storyText">هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜</p>
+ <p id="storyText">هون بتبلش حكايتنا… من حلم ل عمر كامل 💜</p>
 </div>
+
 <div class="story hidden" id="gallery">
  <div class="slider">
+  <button class="arrow left" onclick="prev()">‹</button>
+  <button class="arrow right" onclick="next()">›</button>
   <div class="slides" id="slides">
-   <img src="images/gallery/1.jpg">
-   <img src="images/gallery/2.jpg">
-   <img src="images/gallery/3.jpg">
-   <img src="images/gallery/4.jpg">
-   <img src="images/gallery/5.jpg">
-   <img src="images/gallery/6.jpg">
-   <img src="images/gallery/7.jpg">
-   <img src="images/gallery/8.jpg">
-   <img src="images/gallery/9.jpg">
-   <img src="images/gallery/10.jpg">
+   <img src="images/gallery/1.jpg" onclick="openImg(this)">
+   <img src="images/gallery/2.jpg" onclick="openImg(this)">
+   <img src="images/gallery/3.jpg" onclick="openImg(this)">
+   <img src="images/gallery/4.jpg" onclick="openImg(this)">
+   <img src="images/gallery/5.jpg" onclick="openImg(this)">
+   <img src="images/gallery/6.jpg" onclick="openImg(this)">
+   <img src="images/gallery/7.jpg" onclick="openImg(this)">
+   <img src="images/gallery/8.jpg" onclick="openImg(this)">
+   <img src="images/gallery/9.jpg" onclick="openImg(this)">
+   <img src="images/gallery/10.jpg" onclick="openImg(this)">
   </div>
  </div>
 </div>
@@ -151,7 +239,12 @@ h1,h2{font-family:'Dancing Script',cursive}
 
 </div>
 
+<div id="lightbox" onclick="this.style.display='none'">
+ <img id="lightboxImg">
+</div>
+
 <script>
+/* ===== Login ===== */
 const PASSWORD="anoji123";
 function checkPassword(){
  if(password.value===PASSWORD){
@@ -162,6 +255,7 @@ function checkPassword(){
  }
 }
 
+/* ===== Counter ===== */
 const start=new Date(2025,5,29,2,34);
 setInterval(()=>{
  let d=Math.floor((new Date()-start)/60000);
@@ -170,13 +264,13 @@ setInterval(()=>{
  minutes.textContent=d%60;
 },1000);
 
+/* ===== Navigation ===== */
 function show(id,b){
  document.querySelectorAll(".story").forEach(s=>s.classList.add("hidden"));
  document.getElementById(id).classList.remove("hidden");
  document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
  b.classList.add("active");
 }
-
 /* ========= 100 REASONS ========= */
 
 const AR = [
@@ -277,9 +371,42 @@ const EN = [
 
 let ar=true;
 
+/* ===== Music ===== */
+const music=document.getElementById("bgMusic");
+const musicBtn=document.getElementById("musicBtn");
+let playing=false;
+function toggleMusic(){
+ if(!playing){
+  music.play();
+  musicBtn.textContent="⏸️";
+ }else{
+  music.pause();
+  musicBtn.textContent="🎵";
+ }
+ playing=!playing;
+}
+
+/* ===== Gallery ===== */
+let index=0;
+function updateSlider(){
+ slides.style.transform = `translateX(-${index*100}%)`;
+}
+
+function next(){
+ index=(index+1)%slides.children.length;
+ updateSlider();
+}
+function prev(){
+ index=(index-1+slides.children.length)%slides.children.length;
+ updateSlider();
+}
+function openImg(img){
+ lightboxImg.src=img.src;
+ lightbox.style.display="flex";
+}
 function renderReasons(){
  reasonsList.innerHTML="";
- (ar?AR:EN).forEach(r=>{
+ (ar ? AR : EN).forEach(r=>{
   const li=document.createElement("li");
   li.textContent=r;
   reasonsList.appendChild(li);
@@ -287,32 +414,39 @@ function renderReasons(){
 }
 
 function toggleLang(){
- ar=!ar;
- document.documentElement.lang=ar?"ar":"en";
- document.body.dir=ar?"rtl":"ltr";
+ ar = !ar;
 
- title.textContent="Our Love Story 💜";
- n1.textContent=ar?"📖 قصتنا":"📖 Our Story";
-  n2.textContent=ar?"🖼️ الصور":"🖼️ images";
- n3.textContent=ar?"💜 الأسباب":"💜 Reasons";
- storyText.textContent=ar?
- "هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜":
- "Here begins our story… a small moment that became a lifetime 💜";
- dL.textContent=ar?"يوم":"Days";
- hL.textContent=ar?"ساعة":"Hours";
- mL.textContent=ar?"دقيقة":"Minutes";
- loginTitle.textContent=ar?"💜 موقعنا الخاص":"💜 Our Private Place";
- loginText.textContent=ar?"أدخل كلمة السر":"Enter the password";
- loginBtn.textContent=ar?"دخول":"Enter";
+ document.documentElement.lang = ar ? "ar" : "en";
+ document.body.dir = ar ? "rtl" : "ltr";
+
+ n1.textContent = ar ? "📖 قصتنا" : "📖 Our Story";
+ n2.textContent = ar ? "🖼️ صورنا" : "🖼️ Gallery";
+ n3.textContent = ar ? "💜 الأسباب" : "💜 Reasons";
+
+ storyText.textContent = ar
+  ? "هون بتبلش حكايتنا… من حلم لعمر كامل 💜"
+  : "Here begins our story… from a dream to a lifetime 💜";
+
+ dL.textContent = ar ? "يوم" : "Days";
+ hL.textContent = ar ? "ساعة" : "Hours";
+ mL.textContent = ar ? "دقيقة" : "Minutes";
+
+ loginTitle.textContent = ar ? "💜 موقعنا الخاص" : "💜 Our Private Place";
+ loginText.textContent = ar ? "أدخل كلمة السر" : "Enter the password";
+ loginBtn.textContent = ar ? "دخول" : "Enter";
 
  renderReasons();
 }
 
+// أول تحميل
 renderReasons();
+
 </script>
 
 </body>
 </html>
+
+
 
 
 
