@@ -52,7 +52,8 @@ h1,h2{font-family:'Dancing Script',cursive}
  position:fixed;inset:0;
  background:rgba(0,0,0,.85);
  display:flex;align-items:center;justify-content:center;
- z-index:200;pointer-events:none;
+ z-index:200;
+ pointer-events:none;
 }
 #cinema p{
  font-size:20px;margin:12px 0;
@@ -79,17 +80,25 @@ h1,h2{font-family:'Dancing Script',cursive}
 }
 .nav button{
  padding:10px 16px;border-radius:20px;border:none;
- background:rgba(255,255,255,.25);color:white;cursor:pointer;
+ background:rgba(255,255,255,.25);
+ color:white;cursor:pointer;
 }
-.nav button.active{background:white;color:#6b21a8}
+.nav button.active{
+ background:white;color:#6b21a8;
+}
 
 /* 📦 أقسام */
 .story{
  background:var(--glass);
  padding:20px;border-radius:18px;margin:30px 0;
+ animation:sectionFade .6s ease;
+}
+@keyframes sectionFade{
+ from{opacity:0;transform:translateY(15px)}
+ to{opacity:1}
 }
 
-/* 🖼️ Slider (صورة وحدة فقط) */
+/* 🖼️ Slider */
 .slider{
  position:relative;
  overflow:hidden;
@@ -108,6 +117,7 @@ h1,h2{font-family:'Dancing Script',cursive}
  height:100%;
  flex-shrink:0;
  object-fit:cover;
+ cursor:pointer;
 }
 .arrow{
  position:absolute;
@@ -122,6 +132,29 @@ h1,h2{font-family:'Dancing Script',cursive}
 }
 .arrow.left{left:10px}
 .arrow.right{right:10px}
+
+/* 🔍 تكبير الصور */
+#photoModal{
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.85);
+ display:none;
+ align-items:center;
+ justify-content:center;
+ z-index:400;
+}
+#photoModal .frame{
+ width:80%;
+ max-width:600px;
+ background:#111;
+ padding:15px;
+ border-radius:20px;
+}
+#photoModal img{
+ width:100%;
+ border-radius:15px;
+ cursor:pointer;
+}
 
 /* 🎵 موسيقى */
 #musicBtn{
@@ -138,9 +171,15 @@ h1,h2{font-family:'Dancing Script',cursive}
 
 /* 🌍 لغة */
 #lang{
- position:fixed;top:15px;left:15px;
- background:white;color:#333;padding:8px 12px;
- border-radius:10px;cursor:pointer;z-index:50;
+ position:fixed;
+ top:15px;
+ left:15px;
+ background:white;
+ color:#333;
+ padding:8px 12px;
+ border-radius:10px;
+ cursor:pointer;
+ z-index:50;
 }
 </style>
 </head>
@@ -160,9 +199,9 @@ h1,h2{font-family:'Dancing Script',cursive}
 <!-- 🎬 مقدمة -->
 <div id="cinema" class="hidden">
  <div>
-  <p>💜 أهلاً بكِ</p>
-  <p>هذا المكان صُنع لأنكِ أنتِ</p>
-  <p>وهذه قصتنا…</p>
+  <p id="c1">💜 أهلاً بكِ</p>
+  <p id="c2">هذا المكان صُنع لأنكِ أنتِ</p>
+  <p id="c3">وهذه قصتنا…</p>
  </div>
 </div>
 
@@ -175,42 +214,54 @@ h1,h2{font-family:'Dancing Script',cursive}
 
 <div class="container hidden" id="content">
 
-<h1>Our Love Story 💜</h1>
+<h1 id="title">Our Love Story 💜</h1>
 
 <div id="counter">
- <div class="timeBox"><span id="days">0</span><div>يوم</div></div>
- <div class="timeBox"><span id="hours">0</span><div>ساعة</div></div>
- <div class="timeBox"><span id="minutes">0</span><div>دقيقة</div></div>
+ <div class="timeBox"><span id="days">0</span><div id="dL">يوم</div></div>
+ <div class="timeBox"><span id="hours">0</span><div id="hL">ساعة</div></div>
+ <div class="timeBox"><span id="minutes">0</span><div id="mL">دقيقة</div></div>
 </div>
 
 <div class="nav">
- <button class="active" onclick="show('story',this)">📖 قصتنا</button>
- <button onclick="show('gallery',this)">🖼️ صورنا</button>
+ <button class="active" onclick="show('story',this)" id="n1">📖 قصتنا</button>
+ <button onclick="show('gallery',this)" id="n2">🖼️ صورنا</button>
+ <button onclick="show('reasons',this)" id="n3">💜 الأسباب</button>
 </div>
 
 <div class="story" id="story">
- <p>هنا تبدأ حكايتنا… 💜</p>
+ <p id="storyText">هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜</p>
 </div>
 
 <div class="story hidden" id="gallery">
  <div class="slider">
   <div class="slides" id="slides">
-   <img src="images/gallery/1.jpg">
-   <img src="images/gallery/2.jpg">
-   <img src="images/gallery/3.jpg">
-   <img src="images/gallery/4.jpg">
-   <img src="images/gallery/5.jpg">
-   <img src="images/gallery/6.jpg">
-   <img src="images/gallery/7.jpg">
-   <img src="images/gallery/8.jpg">
-   <img src="images/gallery/9.jpg">
-   <img src="images/gallery/10.jpg">
+   <img src="images/gallery/1.jpg" onclick="openPhoto(this)">
+   <img src="images/gallery/2.jpg" onclick="openPhoto(this)">
+   <img src="images/gallery/3.jpg" onclick="openPhoto(this)">
+   <img src="images/gallery/4.jpg" onclick="openPhoto(this)">
+   <img src="images/gallery/5.jpg" onclick="openPhoto(this)">
+   <img src="images/gallery/6.jpg" onclick="openPhoto(this)">
+   <img src="images/gallery/7.jpg" onclick="openPhoto(this)">
+   <img src="images/gallery/8.jpg" onclick="openPhoto(this)">
+   <img src="images/gallery/9.jpg" onclick="openPhoto(this)">
+   <img src="images/gallery/10.jpg" onclick="openPhoto(this)">
   </div>
   <button class="arrow left" onclick="prev()">❮</button>
   <button class="arrow right" onclick="next()">❯</button>
  </div>
 </div>
 
+<div class="story hidden" id="reasons">
+ <ol id="reasonsList"></ol>
+</div>
+
+</div>
+
+<!-- إطار تكبير الصور -->
+<div id="photoModal" onclick="closePhoto()">
+ <div class="frame">
+  <img id="modalImg">
+ </div>
 </div>
 
 <script>
@@ -248,6 +299,15 @@ function update(){slides.style.transform=`translateX(-${i*100}%)`}
 function next(){i=(i+1)%10;update()}
 function prev(){i=(i+9)%10;update()}
 
+/* 🔍 تكبير الصور */
+function openPhoto(img){
+ modalImg.src=img.src;
+ photoModal.style.display="flex";
+}
+function closePhoto(){
+ photoModal.style.display="none";
+}
+
 /* 🎵 موسيقى */
 let playing=false;
 function toggleMusic(){
@@ -255,14 +315,51 @@ function toggleMusic(){
  playing=!playing;
 }
 
-/* 🌍 لغة (اختصار حالياً) */
-function toggleLang(){
- alert("تبديل اللغة موجود – نكمله بالخطوة القادمة 💜");
+/* 🌍 أسباب + لغة */
+const AR = [
+"لأنك راحتي","لأنك سعادتي","لأنك أماني","لأنك اختياري",
+"لأنك الأمان","لأنك قلبي","لأنك روحي","لأنك حبيبتي",
+"لأنك ضحكتي","لأنك عالمي","لأنك حلمي","لأنك دفئي",
+"لأنك سندي","لأنك طمأنينتي","لأنك شريكتي","لأنك اهتمامي",
+"لأنك شغفي","لأنك قوتي","لأنك نبضي","لأنك نجاتي"
+];
+while(AR.length<100) AR.push("لأنك سبب سعادتي رقم "+(AR.length+1));
+
+const EN = AR.map(t=>t.replace("لأنك","Because you are"));
+
+let ar=true;
+function renderReasons(){
+ reasonsList.innerHTML="";
+ (ar?AR:EN).forEach(r=>{
+  const li=document.createElement("li");
+  li.textContent=r;
+  reasonsList.appendChild(li);
+ });
 }
+
+function toggleLang(){
+ ar=!ar;
+ storyText.textContent=ar?
+ "هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜":
+ "Here begins our story… a simple moment that became a lifetime 💜";
+ dL.textContent=ar?"يوم":"Days";
+ hL.textContent=ar?"ساعة":"Hours";
+ mL.textContent=ar?"دقيقة":"Minutes";
+ n1.textContent=ar?"📖 قصتنا":"📖 Our Story";
+ n2.textContent=ar?"🖼️ صورنا":"🖼️ Our Photos";
+ n3.textContent=ar?"💜 الأسباب":"💜 Reasons";
+ c1.textContent=ar?"💜 أهلاً بكِ":"💜 Welcome";
+ c2.textContent=ar?"هذا المكان صُنع لأنكِ أنتِ":"This place was made for you";
+ c3.textContent=ar?"وهذه قصتنا…":"And this is our story…";
+ renderReasons();
+}
+renderReasons();
 </script>
 
 </body>
 </html>
+
+
 
 
 
