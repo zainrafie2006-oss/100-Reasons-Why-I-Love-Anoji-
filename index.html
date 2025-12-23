@@ -10,7 +10,8 @@
 <style>
 :root{
  --main:#c084fc;
- --glass:rgba(255,255,255,.18);
+ --bg1:#1a062b;
+ --bg2:#3b0f5c;
 }
 
 body{
@@ -18,7 +19,7 @@ body{
  font-family:"Segoe UI",Tahoma,sans-serif;
  color:white;
  text-align:center;
- background:linear-gradient(-45deg,#1a062b,#3b0f5c,#7b2cbf,#3c1361);
+ background:linear-gradient(-45deg,var(--bg1),var(--bg2),#7b2cbf,#3c1361);
  background-size:400% 400%;
  animation:bg 20s ease infinite;
  overflow-x:hidden;
@@ -43,8 +44,8 @@ h1,h2{font-family:'Dancing Script',cursive}
 }
 #cinema p{
  font-size:20px;margin:12px 0;
- animation:fade 1s forwards;
  opacity:0;
+ animation:fade 1s forwards;
 }
 #cinema p:nth-child(1){animation-delay:.5s}
 #cinema p:nth-child(2){animation-delay:2s}
@@ -67,71 +68,84 @@ h1,h2{font-family:'Dancing Script',cursive}
 .nav button{
  padding:10px 16px;border-radius:20px;border:none;
  background:rgba(255,255,255,.25);color:white;cursor:pointer;
+ transition:.3s;
 }
-.nav button.active{background:white;color:#6b21a8}
+.nav button.active{
+ background:white;color:#6b21a8;
+}
 
 /* 📦 أقسام */
 .story{
- background:var(--glass);
+ background:rgba(255,255,255,.15);
  padding:20px;border-radius:18px;margin:30px 0;
+ animation:sectionFade .6s ease;
+}
+@keyframes sectionFade{
+ from{opacity:0;transform:translateY(15px)}
+ to{opacity:1}
 }
 
-/* 🖼️ صور */
+/* 🖼️ Slider */
 .slider{
- position:relative;overflow:hidden;border-radius:18px;
+ position:relative;
+ overflow:hidden;
+ border-radius:18px;
  height:260px;
 }
 .slides{
- display:flex;height:100%;transition:.4s ease;
+ display:flex;
+ height:100%;
+ transition:.5s ease;
 }
 .slides img{
- width:100%;height:100%;object-fit:cover;cursor:pointer;
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ cursor:pointer;
 }
 .arrow{
- position:absolute;top:50%;transform:translateY(-50%);
- background:rgba(0,0,0,.5);
- border:none;color:white;font-size:22px;
- padding:8px 12px;border-radius:50%;
+ position:absolute;
+ top:50%;
+ transform:translateY(-50%);
+ background:rgba(0,0,0,.45);
+ border:none;color:white;
+ font-size:22px;
+ padding:8px 12px;
+ border-radius:50%;
+ cursor:pointer;
 }
 .arrow.left{left:10px}
 .arrow.right{right:10px}
 
-/* 🔍 تكبير */
-#lightbox{
- position:fixed;inset:0;background:rgba(0,0,0,.9);
- display:none;align-items:center;justify-content:center;z-index:300;
+/* 💜 قلوب واقعية */
+.heart{
+ position:fixed;
+ bottom:-30px;
+ width:20px;height:20px;
+ background:linear-gradient(135deg,#ff7eb3,#c084fc);
+ transform:rotate(45deg);
+ animation:float 10s linear forwards;
+ opacity:.7;
 }
-#lightbox img{max-width:90%;max-height:90%}
+.heart::before,.heart::after{
+ content:"";
+ position:absolute;
+ width:20px;height:20px;
+ background:inherit;
+ border-radius:50%;
+}
+.heart::before{top:-10px}
+.heart::after{left:-10px}
+
+@keyframes float{
+ to{transform:translateY(-130vh) rotate(45deg);opacity:0}
+}
 
 /* 🌍 لغة */
 #lang{
  position:fixed;top:15px;left:15px;
  background:white;color:#333;padding:8px 12px;
  border-radius:10px;cursor:pointer;z-index:50;
-}
-
-/* 💜 قلوب */
-.heart{
- position:fixed;
- bottom:-20px;
- width:18px;height:18px;
- background:pink;
- transform:rotate(45deg);
- animation:float 8s linear forwards;
- opacity:.6;
-}
-.heart::before,.heart::after{
- content:"";
- position:absolute;
- width:18px;height:18px;
- background:pink;
- border-radius:50%;
-}
-.heart::before{top:-9px}
-.heart::after{left:9px}
-
-@keyframes float{
- to{transform:translateY(-120vh) rotate(45deg);opacity:0}
 }
 
 /* 📱 موبايل */
@@ -177,11 +191,16 @@ h1,h2{font-family:'Dancing Script',cursive}
 <div class="story hidden" id="gallery">
  <div class="slider" ontouchstart="ts(event)" ontouchend="te(event)">
   <div class="slides" id="slides">
-   <img src="images/gallery/1.jpg"><img src="images/gallery/2.jpg">
-   <img src="images/gallery/3.jpg"><img src="images/gallery/4.jpg">
-   <img src="images/gallery/5.jpg"><img src="images/gallery/6.jpg">
-   <img src="images/gallery/7.jpg"><img src="images/gallery/8.jpg">
-   <img src="images/gallery/9.jpg"><img src="images/gallery/10.jpg">
+   <img src="images/gallery/1.jpg">
+   <img src="images/gallery/2.jpg">
+   <img src="images/gallery/3.jpg">
+   <img src="images/gallery/4.jpg">
+   <img src="images/gallery/5.jpg">
+   <img src="images/gallery/6.jpg">
+   <img src="images/gallery/7.jpg">
+   <img src="images/gallery/8.jpg">
+   <img src="images/gallery/9.jpg">
+   <img src="images/gallery/10.jpg">
   </div>
   <button class="arrow left" onclick="prev()">❮</button>
   <button class="arrow right" onclick="next()">❯</button>
@@ -192,10 +211,6 @@ h1,h2{font-family:'Dancing Script',cursive}
  <ol id="reasonsList"></ol>
 </div>
 
-</div>
-
-<div id="lightbox" onclick="this.style.display='none'">
- <img id="lightboxImg">
 </div>
 
 <script>
@@ -227,29 +242,60 @@ function prev(){i=(i+9)%10;update()}
 function ts(e){x0=e.touches[0].clientX}
 function te(e){let dx=e.changedTouches[0].clientX-x0;if(dx>50)prev();else if(dx<-50)next();}
 
-/* 💜 قلوب ناعمة */
+/* 💜 قلوب */
 setInterval(()=>{
  const h=document.createElement("div");
  h.className="heart";
  h.style.left=Math.random()*100+"vw";
- h.style.animationDuration=(6+Math.random()*4)+"s";
+ h.style.width=h.style.height=(14+Math.random()*16)+"px";
+ h.style.animationDuration=(8+Math.random()*6)+"s";
  document.body.appendChild(h);
- setTimeout(()=>h.remove(),10000);
-},900);
+ setTimeout(()=>h.remove(),14000);
+},1200);
 
-/* 🌍 أسباب 100 */
-const AR=[...Array(100)].map((_,i)=>`لأنك السبب رقم ${i+1} في سعادتي`);
-const EN=[...Array(100)].map((_,i)=>`Because you are reason number ${i+1} for my happiness`);
+/* 🌍 100 سبب */
+const AR=[
+"لأنك راحتي","لأنك سعادتي","لأنك أماني","لأنك اختياري",
+"لأنك الأمان","لأنك قلبي","لأنك روحي","لأنك حبيبتي",
+"لأنك ضحكتي","لأنك عالمي","لأنك حلمي","لأنك دفئي",
+"لأنك نجاتي","لأنك سندي","لأنك طمأنينتي","لأنك شريكتي",
+"لأنك اهتمامي","لأنك شغفي","لأنك سر فرحي","لأنك قوتي",
+"لأنك جمال أيامي","لأنك نبضي","لأنك راحة بالي",
+"لأنك نور طريقي","لأنك ملجئي","لأنك بساطتي",
+"لأنك صدقي","لأنك هدوئي","لأنك حنيني","لأنك أملي",
+"لأنك كل شيء","لأنك عالمي الصغير","لأنك أمان قلبي",
+"لأنك أجمل صدفة","لأنك اختياري الأبدي","لأنك نعمة",
+"لأنك بداية الحكاية","لأنك نهاية التعب",
+"لأنك سكينة الروح","لأنك بيت",
+"لأنك الروح للروح","لأنك السلام",
+"لأنك نبض الحب","لأنك أصدق إحساس",
+"لأنك المعنى","لأنك الحقيقة",
+"لأنك العمر","لأنك الحلم الحقيقي",
+"لأنك الراحة بعد التعب","لأنك العوض",
+"لأنك الدفء في البرد","لأنك الضوء",
+"لأنك البسمة","لأنك الأمل",
+"لأنك السعادة","لأنك الحنان",
+"لأنك الصدق","لأنك الوفاء",
+"لأنك الطمأنينة","لأنك الشغف",
+"لأنك الاختيار","لأنك القلب",
+"لأنك الروح","لأنك الحلم",
+"لأنك الحياة","لأنك الأمان الحقيقي",
+"لأنك راحة قلبي","لأنك سعادتي الأبدية",
+"لأنك أنتِ"
+];
+
+const EN=AR.map(t=>"Because you are my "+t.replace("لأنك ",""));
 
 let ar=true;
 function renderReasons(){
  reasonsList.innerHTML="";
  (ar?AR:EN).forEach(r=>{
-  let li=document.createElement("li");
+  const li=document.createElement("li");
   li.textContent=r;
   reasonsList.appendChild(li);
  });
 }
+
 function toggleLang(){
  ar=!ar;
  storyText.textContent=ar?
@@ -271,6 +317,7 @@ renderReasons();
 
 </body>
 </html>
+
 
 
 
