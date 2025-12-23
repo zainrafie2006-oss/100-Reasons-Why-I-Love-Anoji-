@@ -9,17 +9,24 @@
 
 <style>
 :root{
- --main:#9b59b6;
+ --main:#c084fc;
  --glass:rgba(255,255,255,.18);
 }
 
 body{
  margin:0;
  font-family:"Segoe UI",Tahoma,sans-serif;
- background:linear-gradient(135deg,#5e2b97,var(--main));
  color:white;
  text-align:center;
- overflow-x:hidden;
+ background:linear-gradient(-45deg,#2b0a3d,#5e2b97,#9b59b6,#3c1361);
+ background-size:400% 400%;
+ animation:bg 18s ease infinite;
+}
+
+@keyframes bg{
+ 0%{background-position:0% 50%}
+ 50%{background-position:100% 50%}
+ 100%{background-position:0% 50%}
 }
 
 .hidden{display:none}
@@ -34,15 +41,15 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
  display:flex;
  align-items:center;
  justify-content:center;
- z-index:999;
- pointer-events:none; /* 🔑 المفتاح السحري */
+ z-index:100;
+ pointer-events:none;
 }
 #intro .box{
  background:white;
  color:#333;
  padding:25px;
  border-radius:15px;
- max-width:300px;
+ max-width:320px;
  animation:fade 1s ease;
 }
 
@@ -51,65 +58,98 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
  to{opacity:1}
 }
 
-/* ===== تسجيل الدخول ===== */
-#login input{
- padding:10px;
- border-radius:10px;
- border:none;
- width:200px;
-}
-
-/* ===== أقسام الموقع ===== */
+/* ===== أقسام ===== */
 .story{
  background:var(--glass);
- padding:20px;
- border-radius:15px;
+ padding:25px;
+ border-radius:18px;
  margin:40px 0;
- box-shadow:0 10px 25px rgba(0,0,0,.3);
+ box-shadow:0 10px 30px rgba(0,0,0,.35);
 }
 
+/* ===== شريط التنقل ===== */
 .nav{
  display:flex;
  justify-content:center;
- gap:10px;
+ gap:12px;
  flex-wrap:wrap;
- margin:20px 0;
 }
-
 .nav button{
- padding:10px 16px;
- border-radius:20px;
+ padding:10px 18px;
+ border-radius:22px;
  border:none;
  background:rgba(255,255,255,.25);
  color:white;
  cursor:pointer;
+ transition:.3s;
 }
 .nav button.active{
  background:white;
- color:var(--main);
+ color:#6b21a8;
 }
 
-.gallery-grid{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+/* ===== عدّاد ===== */
+#counter{
+ display:flex;
+ justify-content:center;
  gap:15px;
+ margin:25px 0;
+ flex-wrap:wrap;
+}
+.timeBox{
+ background:rgba(255,255,255,.25);
+ padding:15px 20px;
+ border-radius:16px;
+ min-width:90px;
+}
+.timeBox span{
+ display:block;
+ font-size:26px;
+ font-weight:bold;
+}
+.timeBox small{
+ opacity:.85;
 }
 
-.gallery-grid img{
+/* ===== Slider ===== */
+.slider{
+ position:relative;
+ overflow:hidden;
+ border-radius:18px;
+}
+.slides{
+ display:flex;
+ transition:.5s ease;
+}
+.slides img{
  width:100%;
- border-radius:15px;
+ flex-shrink:0;
  cursor:pointer;
- box-shadow:0 10px 25px rgba(0,0,0,.4);
 }
+.arrow{
+ position:absolute;
+ top:50%;
+ transform:translateY(-50%);
+ background:rgba(0,0,0,.5);
+ border:none;
+ color:white;
+ font-size:22px;
+ padding:10px 14px;
+ cursor:pointer;
+ border-radius:50%;
+}
+.arrow.left{left:10px}
+.arrow.right{right:10px}
 
+/* ===== Lightbox ===== */
 #lightbox{
  position:fixed;
  inset:0;
- background:rgba(0,0,0,.85);
+ background:rgba(0,0,0,.9);
  display:none;
  align-items:center;
  justify-content:center;
- z-index:50;
+ z-index:200;
 }
 #lightbox img{
  max-width:90%;
@@ -117,23 +157,24 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
  border-radius:15px;
 }
 
-#musicControl{
+/* ===== لغة ===== */
+#lang{
  position:fixed;
  top:15px;
- right:15px;
+ left:15px;
  background:white;
- color:var(--main);
- padding:10px 14px;
+ color:#333;
+ padding:8px 12px;
  border-radius:10px;
  cursor:pointer;
- z-index:20;
+ z-index:50;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 💜 رسالة البداية (5 ثواني فقط) -->
+<!-- 💜 رسالة البداية -->
 <div id="intro">
  <div class="box">
   <h2>💜 أهلاً بكِ</h2>
@@ -141,106 +182,181 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
  </div>
 </div>
 
-<!-- 🔐 تسجيل الدخول -->
-<div id="login" class="container">
-<h1>💜 موقعنا الخاص</h1>
-<p>أدخل كلمة السر</p>
-<input type="password" id="password"><br><br>
-<button onclick="checkPassword()">دخول</button>
+<!-- 🌍 اللغة -->
+<div id="lang" onclick="toggleLang()">🌍</div>
+
+<div class="container">
+
+<h1 id="title">Our Love Story 💜</h1>
+
+<!-- ⏳ العدّاد -->
+<div id="counter">
+ <div class="timeBox"><span id="days">0</span><small>يوم</small></div>
+ <div class="timeBox"><span id="hours">0</span><small>ساعة</small></div>
+ <div class="timeBox"><span id="minutes">0</span><small>دقيقة</small></div>
 </div>
 
-<!-- 💖 المحتوى -->
-<div id="content" class="hidden container">
-
-<h1>Our Love Story 💜</h1>
-
+<!-- التنقل -->
 <div class="nav">
-<button id="btn-story" onclick="goTo('story')">📖 قصتنا</button>
-<button id="btn-gallery" onclick="goTo('gallery')">🖼️ صورنا</button>
-<button id="btn-reasons" onclick="goTo('reasons')">💜 الأسباب</button>
+ <button class="active" onclick="showSection('story',this)">📖 قصتنا</button>
+ <button onclick="showSection('gallery',this)">🖼️ صورنا</button>
+ <button onclick="showSection('reasons',this)">💜 الأسباب</button>
 </div>
 
+<!-- قصتنا -->
 <div class="story" id="story">
-<h2>📖 قصتنا</h2>
-<p>هنا تبدأ الحكاية 💜</p>
+ <p id="storyText">
+  هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜
+ </p>
 </div>
 
+<!-- الصور -->
 <div class="story hidden" id="gallery">
-<h2>🖼️ صورنا</h2>
-<div class="gallery-grid">
-<img src="images/gallery/1.jpg" onclick="openImg(this)">
-<img src="images/gallery/2.jpg" onclick="openImg(this)">
-<img src="images/gallery/3.jpg" onclick="openImg(this)">
-</div>
+ <div class="slider" ontouchstart="startTouch(event)" ontouchend="endTouch(event)">
+  <div class="slides" id="slides">
+   <img src="images/gallery/1.jpg" onclick="openImg(this)">
+   <img src="images/gallery/2.jpg" onclick="openImg(this)">
+   <img src="images/gallery/3.jpg" onclick="openImg(this)">
+   <img src="images/gallery/4.jpg" onclick="openImg(this)">
+   <img src="images/gallery/5.jpg" onclick="openImg(this)">
+   <img src="images/gallery/6.jpg" onclick="openImg(this)">
+   <img src="images/gallery/7.jpg" onclick="openImg(this)">
+   <img src="images/gallery/8.jpg" onclick="openImg(this)">
+   <img src="images/gallery/9.jpg" onclick="openImg(this)">
+   <img src="images/gallery/10.jpg" onclick="openImg(this)">
+  </div>
+  <button class="arrow left" onclick="prev()">❮</button>
+  <button class="arrow right" onclick="next()">❯</button>
+ </div>
 </div>
 
+<!-- الأسباب -->
 <div class="story hidden" id="reasons">
-<h2>💜 100 Reasons Why I Love You</h2>
-<ol id="reasonsList"></ol>
+ <ol id="reasonsList"></ol>
 </div>
 
 </div>
 
-<!-- 🔍 تكبير الصور -->
+<!-- Lightbox -->
 <div id="lightbox" onclick="this.style.display='none'">
-<img id="lightboxImg">
+ <img id="lightboxImg">
 </div>
-
-<!-- 🎵 موسيقى -->
-<div id="musicControl" onclick="toggleMusic()">🎵</div>
-<audio id="bgMusic" loop>
-<source src="music/kol-el-qassayed.mp3" type="audio/mpeg">
-</audio>
 
 <script>
-/* ===== إخفاء رسالة البداية بعد 5 ثواني ===== */
-setTimeout(()=>{
- document.getElementById("intro").style.display="none";
-},5000);
+/* ===== رسالة البداية ===== */
+setTimeout(()=>intro.style.display="none",5000);
 
-/* ===== تسجيل الدخول ===== */
-const PASSWORD="anoji123";
-function checkPassword(){
- if(password.value===PASSWORD){
-  document.getElementById("login").style.display="none";
-  document.getElementById("content").classList.remove("hidden");
-  goTo("story");
- }
+/* ===== العدّاد ===== */
+// تاريخ الارتباط: 29-6-2025 الساعة 02:34 صباحًا
+const startDate = new Date(2025,5,29,2,34,0);
+
+function updateCounter(){
+ const now = new Date();
+ let diff = Math.floor((now - startDate) / 1000);
+
+ if(diff < 0) diff = 0;
+
+ const days = Math.floor(diff / 86400);
+ diff %= 86400;
+ const hours = Math.floor(diff / 3600);
+ diff %= 3600;
+ const minutes = Math.floor(diff / 60);
+
+ document.getElementById("days").textContent = days;
+ document.getElementById("hours").textContent = hours;
+ document.getElementById("minutes").textContent = minutes;
 }
+setInterval(updateCounter,1000);
+updateCounter();
 
-/* ===== تنقل ===== */
-function goTo(id){
- document.querySelectorAll(".story").forEach(s=>s.classList.add("hidden"));
+/* ===== التنقل ===== */
+function showSection(id,btn){
+ ["story","gallery","reasons"].forEach(s=>{
+  document.getElementById(s).classList.add("hidden");
+ });
  document.getElementById(id).classList.remove("hidden");
-
  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
- document.getElementById("btn-"+id).classList.add("active");
+ btn.classList.add("active");
 }
 
-/* ===== صور ===== */
+/* ===== Slider ===== */
+let index=0;
+function updateSlide(){
+ slides.style.transform = `translateX(-${index*100}%)`;
+}
+function next(){
+ index=(index+1)%10;
+ updateSlide();
+}
+function prev(){
+ index=(index+9)%10;
+ updateSlide();
+}
+let touchX=0;
+function startTouch(e){
+ touchX = e.touches[0].clientX;
+}
+function endTouch(e){
+ const dx = e.changedTouches[0].clientX - touchX;
+ if(dx > 50) prev();
+ else if(dx < -50) next();
+}
+
+/* ===== Lightbox ===== */
 function openImg(img){
- lightboxImg.src=img.src;
+ lightboxImg.src = img.src;
  lightbox.style.display="flex";
 }
 
-/* ===== أسباب ===== */
-["لأنك عالمي 💜","Because you are my peace","لأن ضحكتك تسعدني"]
-.forEach(r=>{
+/* ===== الأسباب (100) ===== */
+const reasons=[
+"لأنك عالمي","لأنك راحتي","لأن صوتك يهدئ قلبي","لأنك تفهمينني دون كلام",
+"لأنك اخترتني","لأنك تشبهين قلبي","لأنك صادقة","لأنك جميلة من الداخل",
+"لأنك حلمي","لأنك الأمان","لأنك ضحكتي","لأنك سندي","لأنك حنونة",
+"لأنك مختلفة","لأنك قريبة","لأنك صبورة","لأنك قوية","لأنك تحبين بصدق",
+"لأنك تشاركينني كل شيء","لأنك ملجئي","لأنك فرحي","لأنك أملي",
+"لأنك عالمي الصغير","لأنك تشبهينني","لأنك تحترمينني","لأنك تفاجئين قلبي",
+"لأنك حاضرة دائمًا","لأنك صديقة","لأنك حبيبتي","لأنك أختي",
+"لأنك تجعلينني أفضل","لأنك تلهمينني","لأنك تضحكين قلبي",
+"لأنك تهتمين","لأنك صادقة معي","لأنك صبورة عليّ",
+"لأنك تحبين التفاصيل","لأنك تحبينني كما أنا",
+"لأنك تشعرين بي","لأنك تعطين بلا مقابل",
+"لأنك نور أيامي","لأنك فرحتي",
+"لأنك أمنيتي","لأنك كل شيء",
+"لأنك تجعلين العالم أهدأ",
+"لأنك تشبهين الحب","لأنك بيت",
+"لأنك السلام","لأنك الدفء",
+"لأنك تبتسمين لي","لأنك لا تتركين يدي",
+"لأنك تساندينني","لأنك تسمعينني",
+"لأنك تفهمين صمتي","لأنك تحمين قلبي",
+"لأنك صادقة بحبك","لأنك نعمة",
+"لأنك اختياري","لأنك راحتي النفسية",
+"لأنك تعطين معنى للأيام",
+"لأنك تجعلينني أبتسم بلا سبب",
+"لأنك موجودة","لأنك أنتِ",
+"لأنك البداية والنهاية"
+];
+
+reasons.forEach(r=>{
  const li=document.createElement("li");
  li.textContent=r;
  reasonsList.appendChild(li);
 });
 
-/* ===== موسيقى ===== */
-let playing=false;
-function toggleMusic(){
- playing?bgMusic.pause():bgMusic.play();
- playing=!playing;
+/* ===== لغة ===== */
+let ar=true;
+function toggleLang(){
+ ar=!ar;
+ document.getElementById("storyText").textContent = ar ?
+ "هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜" :
+ "Here begins our story… a simple moment that became a lifetime 💜";
 }
 </script>
 
 </body>
 </html>
+
+
 
 
 
