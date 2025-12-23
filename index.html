@@ -149,12 +149,26 @@ h1,h2{font-family:'Dancing Script',cursive}
  background:#111;
  padding:15px;
  border-radius:20px;
+ position:relative;
 }
 #photoModal img{
  width:100%;
  border-radius:15px;
+}
+.modalArrow{
+ position:absolute;
+ top:50%;
+ transform:translateY(-50%);
+ background:rgba(255,255,255,.2);
+ border:none;
+ color:white;
+ font-size:26px;
+ padding:8px 14px;
+ border-radius:50%;
  cursor:pointer;
 }
+.modalArrow.left{left:-10px}
+.modalArrow.right{right:-10px}
 
 /* 🎵 موسيقى */
 #musicBtn{
@@ -235,16 +249,16 @@ h1,h2{font-family:'Dancing Script',cursive}
 <div class="story hidden" id="gallery">
  <div class="slider">
   <div class="slides" id="slides">
-   <img src="images/gallery/1.jpg" onclick="openPhoto(this)">
-   <img src="images/gallery/2.jpg" onclick="openPhoto(this)">
-   <img src="images/gallery/3.jpg" onclick="openPhoto(this)">
-   <img src="images/gallery/4.jpg" onclick="openPhoto(this)">
-   <img src="images/gallery/5.jpg" onclick="openPhoto(this)">
-   <img src="images/gallery/6.jpg" onclick="openPhoto(this)">
-   <img src="images/gallery/7.jpg" onclick="openPhoto(this)">
-   <img src="images/gallery/8.jpg" onclick="openPhoto(this)">
-   <img src="images/gallery/9.jpg" onclick="openPhoto(this)">
-   <img src="images/gallery/10.jpg" onclick="openPhoto(this)">
+   <img src="images/gallery/1.jpg" onclick="openPhoto(0)">
+   <img src="images/gallery/2.jpg" onclick="openPhoto(1)">
+   <img src="images/gallery/3.jpg" onclick="openPhoto(2)">
+   <img src="images/gallery/4.jpg" onclick="openPhoto(3)">
+   <img src="images/gallery/5.jpg" onclick="openPhoto(4)">
+   <img src="images/gallery/6.jpg" onclick="openPhoto(5)">
+   <img src="images/gallery/7.jpg" onclick="openPhoto(6)">
+   <img src="images/gallery/8.jpg" onclick="openPhoto(7)">
+   <img src="images/gallery/9.jpg" onclick="openPhoto(8)">
+   <img src="images/gallery/10.jpg" onclick="openPhoto(9)">
   </div>
   <button class="arrow left" onclick="prev()">❮</button>
   <button class="arrow right" onclick="next()">❯</button>
@@ -257,10 +271,12 @@ h1,h2{font-family:'Dancing Script',cursive}
 
 </div>
 
-<!-- إطار تكبير الصور -->
+<!-- نافذة الصور -->
 <div id="photoModal" onclick="closePhoto()">
- <div class="frame">
+ <div class="frame" onclick="event.stopPropagation()">
+  <button class="modalArrow left" onclick="modalPrev()">❮</button>
   <img id="modalImg">
+  <button class="modalArrow right" onclick="modalNext()">❯</button>
  </div>
 </div>
 
@@ -299,10 +315,20 @@ function update(){slides.style.transform=`translateX(-${i*100}%)`}
 function next(){i=(i+1)%10;update()}
 function prev(){i=(i+9)%10;update()}
 
-/* 🔍 تكبير الصور */
-function openPhoto(img){
- modalImg.src=img.src;
+/* 🔍 تكبير + تنقل */
+let modalIndex=0;
+function openPhoto(index){
+ modalIndex=index;
+ modalImg.src=`images/gallery/${index+1}.jpg`;
  photoModal.style.display="flex";
+}
+function modalNext(){
+ modalIndex=(modalIndex+1)%10;
+ modalImg.src=`images/gallery/${modalIndex+1}.jpg`;
+}
+function modalPrev(){
+ modalIndex=(modalIndex+9)%10;
+ modalImg.src=`images/gallery/${modalIndex+1}.jpg`;
 }
 function closePhoto(){
  photoModal.style.display="none";
@@ -315,15 +341,26 @@ function toggleMusic(){
  playing=!playing;
 }
 
-/* 🌍 أسباب + لغة */
+/* 🌍 100 سبب مختلفين */
 const AR = [
-"لأنك راحتي","لأنك سعادتي","لأنك أماني","لأنك اختياري",
-"لأنك الأمان","لأنك قلبي","لأنك روحي","لأنك حبيبتي",
-"لأنك ضحكتي","لأنك عالمي","لأنك حلمي","لأنك دفئي",
-"لأنك سندي","لأنك طمأنينتي","لأنك شريكتي","لأنك اهتمامي",
-"لأنك شغفي","لأنك قوتي","لأنك نبضي","لأنك نجاتي"
+"لأنك سعادتي","لأنك أماني","لأنك اختياري","لأنك الأمان","لأنك قلبي","لأنك روحي",
+"لأنك راحتي","لأنك ضحكتي","لأنك عالمي","لأنك حلمي","لأنك دفئي","لأنك حضني",
+"لأنك سندي","لأنك طمأنينتي","لأنك نجاتي","لأنك أملي","لأنك شغفي","لأنك قوتي",
+"لأنك نبضي","لأنك حبيبتي","لأنك تكمّلني","لأنك تفهمني","لأنك تشبهني",
+"لأنك تشاركني","لأنك تسمعني","لأنك تحتويّني","لأنك تصدّقني",
+"لأنك تطمّنني","لأنك تحميني","لأنك تفرحني","لأنك صادقة","لأنك حنونة",
+"لأنك طيبة","لأنك دافئة","لأنك قريبة","لأنك حقيقية","لأنك ناعمة",
+"لأنك قوية","لأنك جميلة","لأنك أنثى بكل معنى","لأنك تضحكين بقلبي",
+"لأنك تغيّرين مزاجي للأحسن","لأنك تخففين تعبي","لأنك تهوّنين عليّ",
+"لأنك تزرعين الأمل","لأنك تعطيني معنى","لأنك تحيين أيامي",
+"لأنك تلوني عالمي","لأنك تنسيني كل شي","لأنك أهم شي",
+"لأنك تحبينني كما أنا","لأنك لا تشبهين أحد","لأنك اختيار قلبي",
+"لأنك راحة روحي","لأنك وطن الشعور","لأنك صدفة جميلة","لأنك نعمة",
+"لأنك دعوة مستجابة","لأنك حلم تحقق","لأنك قدري","لأنك البداية الحلوة",
+"لأنك الاستمرار","لأنك النهاية اللي أتمناها","لأنك المستقبل","لأنك اليوم",
+"لأنك الغد","لأنك كل مرة أبتسم","لأنك كل مرة أهدأ",
+"لأنك كل مرة أحب","لأنك كل شيء 💜"
 ];
-while(AR.length<100) AR.push("لأنك سبب سعادتي رقم "+(AR.length+1));
 
 const EN = AR.map(t=>t.replace("لأنك","Because you are"));
 
@@ -358,6 +395,8 @@ renderReasons();
 
 </body>
 </html>
+
+
 
 
 
