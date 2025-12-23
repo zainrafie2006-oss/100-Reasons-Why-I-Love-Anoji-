@@ -45,7 +45,9 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
  padding:10px 16px;border-radius:20px;border:none;
  background:rgba(255,255,255,.25);color:white;cursor:pointer;
 }
-.nav button.active{background:white;color:var(--main);box-shadow:0 0 15px white}
+.nav button.active{
+ background:white;color:var(--main);box-shadow:0 0 15px white
+}
 
 #indicator{
  position:fixed;left:10px;top:50%;transform:translateY(-50%);
@@ -72,6 +74,7 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
  background:white;color:var(--main);padding:10px;border-radius:10px
 }
 
+/* 💌 رسالة الترحيب */
 #popup{
  position:fixed;inset:0;background:rgba(0,0,0,.7);
  display:flex;align-items:center;justify-content:center;z-index:30
@@ -89,7 +92,7 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 
 <body oncontextmenu="return false">
 
-<!-- 💌 رسالة أول دخول -->
+<!-- 💌 رسالة الترحيب (تظهر بعد الدخول فقط) -->
 <div id="popup" class="hidden">
  <div>
   <h2>💜 أهلاً بكِ</h2>
@@ -101,6 +104,7 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 <!-- 🔐 تسجيل الدخول -->
 <div id="login" class="container">
 <h1>💜 موقعنا الخاص</h1>
+<p>أدخل كلمة السر</p>
 <input type="password" id="password"><br><br>
 <button onclick="checkPassword()">دخول</button>
 </div>
@@ -144,45 +148,64 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 
 </div>
 
+<!-- 🔍 تكبير الصور -->
 <div id="lightbox" onclick="this.style.display='none'">
 <img id="lightboxImg">
 </div>
 
+<!-- 🎵 موسيقى -->
 <div id="musicControl" onclick="toggleMusic()">🎵</div>
 <audio id="bgMusic" loop>
 <source src="music/kol-el-qassayed.mp3" type="audio/mpeg">
 </audio>
 
 <script>
+/* ===== متغيرات ===== */
 const PASSWORD="anoji123";
 const login=document.getElementById("login");
 const content=document.getElementById("content");
+const popup=document.getElementById("popup");
 const indicator=document.getElementById("indicator");
-const names={story:"📖 قصتنا",gallery:"🖼️ صورنا",reasons:"💜 الأسباب"};
 
+const names={
+ story:"📖 قصتنا",
+ gallery:"🖼️ صورنا",
+ reasons:"💜 الأسباب"
+};
+
+/* ===== تسجيل الدخول ===== */
 function checkPassword(){
  if(password.value===PASSWORD){
   login.style.display="none";
   content.classList.remove("hidden");
-  init();
+  initView();
+
+  // إظهار الرسالة بعد الدخول فقط (مرة واحدة)
+  if(!localStorage.getItem("seen")){
+   popup.classList.remove("hidden");
+  }
  }
 }
 
-function init(){
+/* ===== تهيئة الصفحة ===== */
+function initView(){
  document.querySelectorAll(".story").forEach(s=>s.classList.add("hidden"));
  goTo("story");
- if(!localStorage.getItem("seen")){
-  popup.classList.remove("hidden");
- }
 }
 
+/* ===== إغلاق رسالة الترحيب ===== */
 function closePopup(){
  popup.classList.add("hidden");
  localStorage.setItem("seen","1");
 }
 
-function logout(){localStorage.clear();location.reload();}
+/* ===== تسجيل خروج ===== */
+function logout(){
+ localStorage.clear();
+ location.reload();
+}
 
+/* ===== تنقل ===== */
 function goTo(id){
  document.querySelectorAll(".story").forEach(s=>s.classList.add("hidden"));
  const sec=document.getElementById(id);
@@ -192,33 +215,41 @@ function goTo(id){
  document.getElementById("btn-"+id).classList.add("active");
 }
 
+/* ===== صور ===== */
 function openImg(img){
  lightboxImg.src=img.src;
  lightbox.style.display="flex";
 }
 
+/* ===== أسباب ===== */
 const reasons=[
-"لأنك عالمي 💜",
-"Because you are my peace",
-"لأن ضحكتك تسعدني",
-"Because you chose me"
+ "لأنك عالمي 💜",
+ "Because you are my peace",
+ "لأن ضحكتك تسعدني",
+ "Because you chose me"
 ];
 let i=0;
 function nextReason(){
- reason.textContent=reasons[i++%reasons.length];
+ reason.textContent=reasons[i++ % reasons.length];
 }
 nextReason();
 
+/* ===== عداد الأيام ===== */
 const start=new Date("2023-01-01");
 const days=Math.floor((Date.now()-start)/86400000);
 document.getElementById("days").textContent=`مرّ على قصتنا ${days} يومًا 💜`;
 
+/* ===== موسيقى ===== */
 let playing=false;
-function toggleMusic(){playing?bgMusic.pause():bgMusic.play();playing=!playing;}
+function toggleMusic(){
+ playing?bgMusic.pause():bgMusic.play();
+ playing=!playing;
+}
 </script>
 
 </body>
 </html>
+
 
 
 
