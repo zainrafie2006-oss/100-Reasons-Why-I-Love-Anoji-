@@ -13,6 +13,40 @@
  --glass:rgba(255,255,255,.18);
 }
 
+/* ===== Floating Hearts ===== */
+.heart{
+ position:fixed;
+ width:12px;
+ height:12px;
+ background:rgba(255,255,255,.15);
+ transform:rotate(45deg);
+ animation:float 12s linear infinite;
+ z-index:1;
+}
+.heart::before,.heart::after{
+ content:"";
+ position:absolute;
+ width:12px;height:12px;
+ background:inherit;
+ border-radius:50%;
+}
+.heart::before{top:-6px;left:0}
+.heart::after{left:-6px;top:0}
+
+@keyframes float{
+ from{transform:translateY(100vh) rotate(45deg);opacity:0}
+ to{transform:translateY(-10vh) rotate(45deg);opacity:1}
+}
+
+/* ===== Mobile Extra ===== */
+@media (max-width:600px){
+ h1{font-size:32px}
+ .nav button{font-size:14px;padding:8px 12px}
+ .slides img{max-height:260px}
+ #musicBtn{width:48px;height:48px}
+}
+
+
 /* ===== Global ===== */
 body{
  margin:0;
@@ -79,13 +113,16 @@ h1,h2{font-family:'Dancing Script',cursive}
 /* ===== Sections ===== */
 .story{
  background:var(--glass);
- padding:20px;border-radius:18px;margin:30px 0;
- animation:sectionFade .6s ease;
+ padding:20px;
+ border-radius:18px;
+ margin:30px 0;
+ transition:opacity .5s ease, transform .5s ease;
 }
-@keyframes sectionFade{
- from{opacity:0;transform:translateY(15px)}
- to{opacity:1}
+.story.hidden{
+ opacity:0;
+ transform:translateY(20px);
 }
+
 
 /* ===== Language Button ===== */
 #lang{
@@ -244,6 +281,12 @@ h1,h2{font-family:'Dancing Script',cursive}
 </div>
 
 <script>
+document.addEventListener("keydown",e=>{
+ if(document.getElementById("gallery").classList.contains("hidden")) return;
+ if(e.key==="ArrowRight") next();
+ if(e.key==="ArrowLeft") prev();
+});
+
 /* ===== Login ===== */
 const PASSWORD="anoji123";
 function checkPassword(){
@@ -387,10 +430,13 @@ function toggleMusic(){
 }
 
 /* ===== Gallery ===== */
-let index=0;
+let index = 0;
+
 function updateSlider(){
- slides.style.transform = `translateX(-${index*100}%)`;
+ const dir = ar ? 1 : -1; // عربي = RTL ، إنكليزي = LTR
+ slides.style.transform = `translateX(${dir * -index * 100}%)`;
 }
+
 
 function next(){
  index=(index+1)%slides.children.length;
@@ -437,6 +483,14 @@ function toggleLang(){
 
  renderReasons();
 }
+/* ===== Floating Hearts JS ===== */
+for(let i=0;i<20;i++){
+ const h=document.createElement("div");
+ h.className="heart";
+ h.style.left=Math.random()*100+"vw";
+ h.style.animationDelay=Math.random()*10+"s";
+ document.body.appendChild(h);
+}
 
 // أول تحميل
 renderReasons();
@@ -445,6 +499,8 @@ renderReasons();
 
 </body>
 </html>
+
+
 
 
 
