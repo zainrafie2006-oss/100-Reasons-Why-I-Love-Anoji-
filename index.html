@@ -23,20 +23,48 @@ body{
 }
 
 .hidden{display:none}
-.fade{animation:fade .6s ease}
-@keyframes fade{
- from{opacity:0;transform:translateY(20px)}
- to{opacity:1;transform:none}
-}
-
 .container{max-width:900px;margin:auto;padding:25px}
 h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 
+/* ===== رسالة البداية ===== */
+#intro{
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.7);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ z-index:999;
+ pointer-events:none; /* 🔑 المفتاح السحري */
+}
+#intro .box{
+ background:white;
+ color:#333;
+ padding:25px;
+ border-radius:15px;
+ max-width:300px;
+ animation:fade 1s ease;
+}
+
+@keyframes fade{
+ from{opacity:0;transform:translateY(20px)}
+ to{opacity:1}
+}
+
+/* ===== تسجيل الدخول ===== */
+#login input{
+ padding:10px;
+ border-radius:10px;
+ border:none;
+ width:200px;
+}
+
+/* ===== أقسام الموقع ===== */
 .story{
  background:var(--glass);
  padding:20px;
  border-radius:15px;
- margin:50px 0;
+ margin:40px 0;
  box-shadow:0 10px 25px rgba(0,0,0,.3);
 }
 
@@ -45,44 +73,26 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
  justify-content:center;
  gap:10px;
  flex-wrap:wrap;
- margin:25px 0;
- position:sticky;
- top:10px;
- z-index:5;
+ margin:20px 0;
 }
 
 .nav button{
  padding:10px 16px;
  border-radius:20px;
  border:none;
- cursor:pointer;
  background:rgba(255,255,255,.25);
  color:white;
- transition:.3s;
+ cursor:pointer;
 }
-
 .nav button.active{
  background:white;
  color:var(--main);
- box-shadow:0 0 15px white;
-}
-
-#indicator{
- position:fixed;
- left:10px;
- top:50%;
- transform:translateY(-50%);
- background:rgba(255,255,255,.25);
- padding:10px;
- border-radius:12px;
- font-size:14px;
 }
 
 .gallery-grid{
  display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
  gap:15px;
- margin-top:20px;
 }
 
 .gallery-grid img{
@@ -90,9 +100,7 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
  border-radius:15px;
  cursor:pointer;
  box-shadow:0 10px 25px rgba(0,0,0,.4);
- transition:.3s;
 }
-.gallery-grid img:hover{transform:scale(1.05)}
 
 #lightbox{
  position:fixed;
@@ -101,7 +109,7 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
  display:none;
  align-items:center;
  justify-content:center;
- z-index:20;
+ z-index:50;
 }
 #lightbox img{
  max-width:90%;
@@ -118,34 +126,20 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
  padding:10px 14px;
  border-radius:10px;
  cursor:pointer;
- z-index:10;
-}
-
-/* 🔐 رسالة البداية */
-#overlay{
- position:fixed;
- inset:0;
- background:rgba(0,0,0,.8);
- display:flex;
- align-items:center;
- justify-content:center;
- z-index:50;
-}
-#overlay .box{
- background:white;
- color:#333;
- padding:25px;
- border-radius:15px;
- max-width:300px;
-}
-
-@media(max-width:600px){
- #indicator{display:none}
+ z-index:20;
 }
 </style>
 </head>
 
-<body oncontextmenu="return false">
+<body>
+
+<!-- 💜 رسالة البداية (5 ثواني فقط) -->
+<div id="intro">
+ <div class="box">
+  <h2>💜 أهلاً بكِ</h2>
+  <p>هذا المكان صُنع لأنكِ أنتِ…</p>
+ </div>
+</div>
 
 <!-- 🔐 تسجيل الدخول -->
 <div id="login" class="container">
@@ -155,22 +149,10 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 <button onclick="checkPassword()">دخول</button>
 </div>
 
-<!-- 💌 رسالة البداية (بعد الدخول فقط) -->
-<div id="overlay" class="hidden">
- <div class="box">
-  <h2>💜 أهلاً بكِ</h2>
-  <p>هذا المكان صُنع لأنكِ أنتِ…</p>
-  <button onclick="closeIntro()">دخول</button>
- </div>
-</div>
-
 <!-- 💖 المحتوى -->
 <div id="content" class="hidden container">
 
-<button onclick="logout()">🚪 تسجيل خروج</button>
-
 <h1>Our Love Story 💜</h1>
-<p id="days"></p>
 
 <div class="nav">
 <button id="btn-story" onclick="goTo('story')">📖 قصتنا</button>
@@ -178,27 +160,23 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 <button id="btn-reasons" onclick="goTo('reasons')">💜 الأسباب</button>
 </div>
 
-<div id="indicator">📖 قصتنا</div>
-
-<div class="story fade" id="story">
+<div class="story" id="story">
 <h2>📖 قصتنا</h2>
 <p>هنا تبدأ الحكاية 💜</p>
 </div>
 
-<div class="story hidden fade" id="gallery">
+<div class="story hidden" id="gallery">
 <h2>🖼️ صورنا</h2>
 <div class="gallery-grid">
 <img src="images/gallery/1.jpg" onclick="openImg(this)">
 <img src="images/gallery/2.jpg" onclick="openImg(this)">
 <img src="images/gallery/3.jpg" onclick="openImg(this)">
-<img src="images/gallery/4.jpg" onclick="openImg(this)">
 </div>
 </div>
 
-<div class="story hidden fade" id="reasons">
-<h2>💜 سبب جديد</h2>
-<p id="reason"></p>
-<button onclick="nextReason()">➕ سبب آخر</button>
+<div class="story hidden" id="reasons">
+<h2>💜 100 Reasons Why I Love You</h2>
+<ol id="reasonsList"></ol>
 </div>
 
 </div>
@@ -215,56 +193,26 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 </audio>
 
 <script>
-/* ===== متغيرات ===== */
-const PASSWORD="anoji123";
-const login=document.getElementById("login");
-const content=document.getElementById("content");
-const overlay=document.getElementById("overlay");
-const indicator=document.getElementById("indicator");
-
-const names={
- story:"📖 قصتنا",
- gallery:"🖼️ صورنا",
- reasons:"💜 الأسباب"
-};
+/* ===== إخفاء رسالة البداية بعد 5 ثواني ===== */
+setTimeout(()=>{
+ document.getElementById("intro").style.display="none";
+},5000);
 
 /* ===== تسجيل الدخول ===== */
+const PASSWORD="anoji123";
 function checkPassword(){
  if(password.value===PASSWORD){
-  login.style.display="none";
-  content.classList.remove("hidden");
-  initView();
-
-  if(!localStorage.getItem("introSeen")){
-   overlay.classList.remove("hidden");
-  }
+  document.getElementById("login").style.display="none";
+  document.getElementById("content").classList.remove("hidden");
+  goTo("story");
  }
-}
-
-/* ===== رسالة البداية ===== */
-function closeIntro(){
- overlay.classList.add("hidden");
- localStorage.setItem("introSeen","1");
-}
-
-/* ===== تهيئة ===== */
-function initView(){
- document.querySelectorAll(".story").forEach(s=>s.classList.add("hidden"));
- goTo("story");
-}
-
-/* ===== خروج ===== */
-function logout(){
- localStorage.clear();
- location.reload();
 }
 
 /* ===== تنقل ===== */
 function goTo(id){
  document.querySelectorAll(".story").forEach(s=>s.classList.add("hidden"));
- const sec=document.getElementById(id);
- sec.classList.remove("hidden");
- indicator.textContent=names[id];
+ document.getElementById(id).classList.remove("hidden");
+
  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
  document.getElementById("btn-"+id).classList.add("active");
 }
@@ -276,22 +224,12 @@ function openImg(img){
 }
 
 /* ===== أسباب ===== */
-const reasons=[
- "لأنك عالمي 💜",
- "Because you are my peace",
- "لأن ضحكتك تسعدني",
- "Because you chose me"
-];
-let i=0;
-function nextReason(){
- reason.textContent=reasons[i++ % reasons.length];
-}
-nextReason();
-
-/* ===== عداد أيام ===== */
-const start=new Date("2023-01-01");
-const days=Math.floor((Date.now()-start)/86400000);
-document.getElementById("days").textContent=`مرّ على قصتنا ${days} يومًا 💜`;
+["لأنك عالمي 💜","Because you are my peace","لأن ضحكتك تسعدني"]
+.forEach(r=>{
+ const li=document.createElement("li");
+ li.textContent=r;
+ reasonsList.appendChild(li);
+});
 
 /* ===== موسيقى ===== */
 let playing=false;
@@ -303,6 +241,7 @@ function toggleMusic(){
 
 </body>
 </html>
+
 
 
 
