@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Our Love Story 💜</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+<style>
+body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: linear-gradient(135deg, #5e2b97, #9b59b6);
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+.hidden {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+.show {
+    opacity: 1;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+input, button {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+
+button {
+    background: #ffffff;
+    color: #5e2b97;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+button:hover {
+    background: #e0d4f7;
+}
+
+.gallery img {
+    width: 250px;
+    border-radius: 15px;
+    margin: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.gallery img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+h1, h2 {
+    font-weight: 300;
+    font-family: 'Dancing Script', cursive;
+}
+
+.story {
+    background: rgba(255,255,255,0.15);
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* قلوب متحركة */
+.heart {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: pink;
+    transform: rotate(45deg);
+    animation: float 5s linear infinite;
+}
+.heart::before,
+.heart::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: pink;
+    border-radius: 50%;
+}
+.heart::before { top: -10px; left: 0; }
+.heart::after { left: 10px; top: 0; }
+
+@keyframes float {
+    0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+    100% { transform: translateY(-800px) rotate(45deg); opacity: 0; }
+}
+
+/* زر تحكم الموسيقى */
+#musicControl {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ffffff;
+    color: #5e2b97;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 10;
+}
+</style>
+</head>
+<body>
+
+<!-- قلوب متحركة -->
+<div id="hearts"></div>
+
+<!-- 🔐 Password Screen -->
+<div id="login" class="container">
+    <h1>💜 موقعنا الخاص</h1>
+    <p>أدخل كلمة السر / Enter the password</p>
+    <input type="password" id="password" placeholder="كلمة السر">
+    <br>
+    <button onclick="checkPassword()">دخول</button>
+</div>
+
+<!-- 💖 Main Content -->
+<div id="content" class="hidden container">
+
+    <h1>Our Love Story 💜</h1>
+    <p>قصتنا… بلغتين، بقلب واحد</p>
+
+    <!-- 📖 Story -->
+    <div class="story">
+        <h2>📖 قصتنا</h2>
+        <p>
+            هنا اكتب قصتكما بالعربية…<br><br>
+            Here you can write your love story in English…
+        </p>
+    </div>
+
+    <!-- 🖼️ Gallery -->
+    <div class="story">
+        <h2>🖼️ صورنا</h2>
+        <div class="gallery">
+            <img src="images/1.jpg" alt="صورة 1">
+            <img src="images/2.jpg" alt="صورة 2">
+            <img src="images/3.jpg" alt="صورة 3">
+        </div>
+    </div>
+
+    <!-- 💌 Messages -->
+    <div class="story">
+        <h2>💌 رسائل</h2>
+        <p>
+            رسالة حب… تاريخ مهم… وعد 💜<br>
+            A love message, a promise, a memory.
+        </p>
+    </div>
+
+    <!-- 💜 100 Reasons -->
+    <div class="story">
+        <h2>💜 100 Reasons Why I Love You</h2>
+        <ol style="text-align:left; max-width:700px; margin:auto;">
+            <li>لأن ابتسامتك تجعل يومي أجمل 💜</li>
+            <li>لأنك تفهمينني حتى بدون كلام</li>
+            <li>Because you make me feel safe</li>
+            <li>Because your laugh is my favorite sound</li>
+            <li>لأنك تجعل كل لحظة معنا مميزة</li>
+            <li>Because you always support me</li>
+            <li>لأن قلبك كبير وحنون</li>
+            <li>Because your hugs are magical</li>
+            <li>لأنك تضحك من أعماق قلبك</li>
+            <li>Because you complete me</li>
+        </ol>
+        <p style="margin-top:15px; font-style:italic;">
+            (سنكملها معًا سببًا سببًا 🌹)
+        </p>
+    </div>
+
+</div> <!-- نهاية #content -->
+
+<!-- زر تحكم الموسيقى -->
+<div id="musicControl" onclick="toggleMusic()">تشغيل / إيقاف الموسيقى 🎵</div>
+
+<!-- 👂 موسيقى YouTube مخفية -->
+<iframe id="yt1" width="0" height="0"
+src="https://www.youtube.com/embed/5EgyhbdSZoU?autoplay=0&loop=1&playlist=5EgyhbdSZoU"
+frameborder="0" allow="autoplay; encrypted-media"></iframe>
+<iframe id="yt2" width="0" height="0"
+src="https://www.youtube.com/embed/DovIiP4L8LQ?autoplay=0&loop=1&playlist=DovIiP4L8LQ"
+frameborder="0" allow="autoplay; encrypted-media"></iframe>
+<iframe id="yt3" width="0" height="0"
+src="https://www.youtube.com/embed/TZzTsGuyNZs?autoplay=0&loop=1&playlist=TZzTsGuyNZs"
+frameborder="0" allow="autoplay; encrypted-media"></iframe>
+<iframe id="yt4" width="0" height="0"
+src="https://www.youtube.com/embed/aF6lCa38RkE?autoplay=0&loop=1&playlist=aF6lCa38RkE"
+frameborder="0" allow="autoplay; encrypted-media"></iframe>
+<iframe id="yt5" width="0" height="0"
+src="https://www.youtube.com/embed/JEq8MHpjS2k?autoplay=0&loop=1&playlist=JEq8MHpjS2k"
+frameborder="0" allow="autoplay; encrypted-media"></iframe>
+<iframe id="yt6" width="0" height="0"
+src="https://www.youtube.com/embed/bmbHfXq2CAc?autoplay=0&loop=1&playlist=bmbHfXq2CAc"
+frameborder="0" allow="autoplay; encrypted-media"></iframe>
+<iframe id="yt7" width="0" height="0"
+src="https://www.youtube.com/embed/hy4qC7CTQTg?autoplay=0&loop=1&playlist=hy4qC7CTQTg"
+frameborder="0" allow="autoplay; encrypted-media"></iframe>
+
+<script>
+// كلمة السر
+const correctPassword = "anoji123"; 
+
+function checkPassword() {
+    const input = document.getElementById("password").value;
+    if(input === correctPassword){
+        document.getElementById("login").style.display = "none";
+        const content = document.getElementById("content");
+        content.classList.remove("hidden");
+        content.classList.add("show");
+        playYouTubeMusic();
+    } else {
+        alert("كلمة السر غير صحيحة");
+    }
+}
+
+// قلوب متحركة
+function createHearts() {
+    const heartsContainer = document.getElementById('hearts');
+    for(let i=0;i<20;i++){
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random()*100 + 'vw';
+        heart.style.animationDuration = (3+Math.random()*5) + 's';
+        heartsContainer.appendChild(heart);
+    }
+}
+createHearts();
+
+// تشغيل موسيقى YouTube
+let musicPlaying = false;
+function playYouTubeMusic() {
+    const ytIds = ['yt1','yt2','yt3','yt4','yt5','yt6','yt7'];
+    ytIds.forEach(id => {
+        document.getElementById(id).src += "&autoplay=1";
+    });
+    musicPlaying = true;
+}
+
+// زر تشغيل/إيقاف الموسيقى
+function toggleMusic() {
+    const ytIds = ['yt1','yt2','yt3','yt4','yt5','yt6','yt7'];
+    if(musicPlaying){
+        ytIds.forEach(id => document.getElementById(id).src = document.getElementById(id).src.replace("&autoplay=1",""));
+        musicPlaying = false;
+    } else {
+        playYouTubeMusic();
+    }
+}
+</script>
+
+</body>
+</html>
