@@ -101,9 +101,9 @@ h1,h2{font-family:'Dancing Script',cursive}
 
 <div id="cinema" class="hidden">
  <div>
-  <p id="c1">💜 أهلاً بكِ</p>
-  <p id="c2">هذا المكان صُنع لأنكِ أنتِ</p>
-  <p id="c3">وهذه قصتنا…</p>
+  <p id="c1">💜 يقبرنيييي هالشكللل</p>
+  <p id="c2">نور الموقع يا قلبيييي</p>
+  <p id="c3">انشالله يعجبك يا بوبو</p>
  </div>
 </div>
 
@@ -119,13 +119,30 @@ h1,h2{font-family:'Dancing Script',cursive}
  <div class="timeBox"><span id="minutes">0</span><div id="mL">دقيقة</div></div>
 </div>
 
-<div class="nav">
+ <div class="nav">
  <button class="active" onclick="show('story',this)" id="n1">📖 قصتنا</button>
+ <button onclick="show('gallery',this)" id="n2">🖼️ صورنا</button>
  <button onclick="show('reasons',this)" id="n3">💜 الأسباب</button>
 </div>
 
 <div class="story" id="story">
  <p id="storyText">هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜</p>
+</div>
+<div class="story hidden" id="gallery">
+ <div class="slider">
+  <div class="slides" id="slides">
+   <img src="images/gallery/1.jpg">
+   <img src="images/gallery/2.jpg">
+   <img src="images/gallery/3.jpg">
+   <img src="images/gallery/4.jpg">
+   <img src="images/gallery/5.jpg">
+   <img src="images/gallery/6.jpg">
+   <img src="images/gallery/7.jpg">
+   <img src="images/gallery/8.jpg">
+   <img src="images/gallery/9.jpg">
+   <img src="images/gallery/10.jpg">
+  </div>
+ </div>
 </div>
 
 <div class="story hidden" id="reasons">
@@ -176,7 +193,37 @@ const AR = [
 "لأنك حلم تحقق","لأنك مستقبلي","لأنك حاضري","لأنك أيامي","لأنك كل لحظاتي",
 "لأنك عالمي الخاص","لأنك لا تُعوّضين","لأنك لا تتكررين","لأنك مختلفة عن الجميع","لأنك اختيار قلبي الدائم",
 "لأنك حبي الأول","لأنك حبي الأخير","لأنك روحي حين أتعب","لأنك قلبي حين أضيع","لأنك الحياة حين تضيق",
-"لأنك الأمان حين أخاف","لأنك دفء أيامي","لأنك تفاصيل سعادتي","لأنك نبض أيامي","لأنك حياتي 💜"
+"لأنك صوت قلبي",
+"لأنك سر فرحي",
+"لأنك راحة بالي",
+"لأنك أصدق إحساسي",
+"لأنك أمان أحلامي",
+"لأنك جمال أيامي",
+"لأنك نبض ليلي",
+"لأنك دفء قلبي",
+"لأنك سبب هدوئي",
+"لأنك ضي عتمتي",
+"لأنك فرحة عمري",
+"لأنك حب بلا شروط",
+"لأنك الحقيقة الحلوة",
+"لأنك أملي الدائم",
+"لأنك صبري الجميل",
+"لأنك قلبي حين يتعب",
+"لأنك روحي حين تضعف",
+"لأنك يدي حين أسقط",
+"لأنك ضحكتي الصادقة",
+"لأنك أمان الطريق",
+"لأنك بداية الحكاية",
+"لأنك نهاية الخوف",
+"لأنك سر الحياة",
+"لأنك معنى الوجود",
+"لأنك اختصار العالم",
+"لأنك دفء الشتاء",
+"لأنك نور الصباح",
+"لأنك هدوء الليل",
+"لأنك حب لا ينتهي","لأنك أنا 💜",
+"لأنك الأمان حين أخاف",
+"لأنك دفء أيامي","لأنك تفاصيل سعادتي","لأنك نبض أيامي","لأنك حياتي 💜"
 ];
 
 
@@ -194,7 +241,38 @@ const EN = [
 "Because you are a dream come true","Because you are my future","Because you are my present","Because you are my days","Because you are every moment",
 "Because you are my private world","Because you are irreplaceable","Because you are one of a kind","Because you are different from everyone","Because you are my forever choice",
 "Because you are my first love","Because you are my last love","Because you heal my soul","Because you calm my heart","Because you make life easier",
-"Because you protect me","Because you warm my days","Because you are my happiness details","Because you are my daily smile","Because you are my life 💜"
+"Because you protect me","Because you warm my days","Because you are my happiness details","Because you are my daily smile","Because you are my life 💜",
+"Because you are my heart’s voice",
+"Because you are my secret joy",
+"Because you are my peace of mind",
+"Because you are my truest feeling",
+"Because you are the safety of my dreams",
+"Because you make my days beautiful",
+"Because you are the beat of my nights",
+"Because you warm my heart",
+"Because you calm my soul",
+"Because you light my darkness",
+"Because you are my lifetime joy",
+"Because you love without conditions",
+"Because you are my sweet truth",
+"Because you are my constant hope",
+"Because you are my beautiful patience",
+"Because you carry my heart when it’s tired",
+"Because you lift my soul when it’s weak",
+"Because you hold my hand when I fall",
+"Because you are my honest smile",
+"Because you make the road safe",
+"Because you are the beginning of my story",
+"Because you are the end of my fears",
+"Because you are the secret of life",
+"Because you give meaning to existence",
+"Because you are my whole world",
+"Because you are the warmth of winter",
+"Because you are the light of my mornings",
+"Because you are the calm of my nights",
+"Because you are endless love",
+"Because you are me 💜"
+
 ];
 
 let ar=true;
@@ -215,6 +293,7 @@ function toggleLang(){
 
  title.textContent="Our Love Story 💜";
  n1.textContent=ar?"📖 قصتنا":"📖 Our Story";
+  n2.textContent=ar?"🖼️ الصور":"🖼️ images";
  n3.textContent=ar?"💜 الأسباب":"💜 Reasons";
  storyText.textContent=ar?
  "هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜":
@@ -234,6 +313,7 @@ renderReasons();
 
 </body>
 </html>
+
 
 
 
