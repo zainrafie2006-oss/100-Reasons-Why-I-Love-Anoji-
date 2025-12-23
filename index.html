@@ -154,19 +154,29 @@ h1, h2 {
 </audio>
 
 <script>
+/* 🔐 عناصر الصفحة */
+const login = document.getElementById("login");
+const content = document.getElementById("content");
+const passwordInput = document.getElementById("password");
+
 /* 🔐 كلمة المرور */
 const PASSWORD = "anoji123";
 
 function checkPassword() {
-    if (password.value === PASSWORD) {
+    if (passwordInput.value === PASSWORD) {
         login.style.display = "none";
+        content.classList.remove("hidden");
         content.classList.add("show");
         localStorage.setItem("logged", "true");
-    } else alert("كلمة السر غير صحيحة");
+    } else {
+        alert("كلمة السر غير صحيحة");
+    }
 }
 
+/* حفظ تسجيل الدخول */
 if (localStorage.getItem("logged") === "true") {
     login.style.display = "none";
+    content.classList.remove("hidden");
     content.classList.add("show");
 }
 
@@ -178,17 +188,24 @@ setInterval(() => {
     heart.style.animationDuration = (4 + Math.random() * 4) + "s";
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 8000);
-}, 500);
+}, 600);
 
 /* 🎵 الموسيقى */
 const music = document.getElementById("bgMusic");
 let playing = false;
 
 function toggleMusic() {
+    if (!music) {
+        alert("ملف الموسيقى غير موجود");
+        return;
+    }
+
     if (playing) {
         music.pause();
     } else {
-        music.play();
+        music.play().catch(() => {
+            alert("اضغط مرة أخرى لتشغيل الموسيقى 🎵");
+        });
     }
     playing = !playing;
 }
@@ -203,12 +220,16 @@ const reasonsList = [
 ];
 
 const ol = document.getElementById("reasons");
-reasonsList.forEach(r => {
-    const li = document.createElement("li");
-    li.textContent = r;
-    ol.appendChild(li);
-});
+if (ol) {
+    reasonsList.forEach(r => {
+        const li = document.createElement("li");
+        li.textContent = r;
+        ol.appendChild(li);
+    });
+}
 </script>
+
 
 </body>
 </html>
+
