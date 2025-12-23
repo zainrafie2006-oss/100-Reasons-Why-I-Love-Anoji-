@@ -177,7 +177,7 @@ h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
 <p>هنا تكتب قصتكما 💜</p>
 </div>
 
-<div class="story" id="gallery">
+<div class="story hidden" id="gallery">
 <h2>🖼️ صورنا</h2>
 <div class="gallery-grid">
 <img src="images/gallery/1.jpg" onclick="openImg(this)">
@@ -254,10 +254,25 @@ const indicator=document.getElementById("indicator");
 const names={story:"📖 قصتنا",gallery:"🖼️ صورنا",reasons:"💜 الأسباب"};
 
 function goTo(id){
- document.getElementById(id).scrollIntoView({behavior:"smooth"});
+
+ // إخفاء كل الأقسام
+ document.querySelectorAll(".story").forEach(sec=>{
+   sec.classList.add("hidden");
+ });
+
+ // إظهار القسم المطلوب
+ const section = document.getElementById(id);
+ section.classList.remove("hidden");
+
+ // انتقال ناعم
+ section.scrollIntoView({behavior:"smooth"});
+
+ // تفعيل الزر
  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
  document.getElementById("btn-"+id).classList.add("active");
- indicator.textContent=names[id];
+
+ // تحديث المؤشر
+ indicator.textContent = names[id];
 }
 
 function openImg(img){
@@ -275,3 +290,4 @@ function openImg(img){
 
 </body>
 </html>
+
