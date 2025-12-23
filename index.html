@@ -18,9 +18,10 @@ body{
  font-family:"Segoe UI",Tahoma,sans-serif;
  color:white;
  text-align:center;
- background:linear-gradient(-45deg,#2b0a3d,#5e2b97,#9b59b6,#3c1361);
+ background:linear-gradient(-45deg,#1a062b,#3b0f5c,#7b2cbf,#3c1361);
  background-size:400% 400%;
- animation:bg 18s ease infinite;
+ animation:bg 20s ease infinite;
+ overflow-x:hidden;
 }
 
 @keyframes bg{
@@ -30,331 +31,249 @@ body{
 }
 
 .hidden{display:none}
-.container{max-width:900px;margin:auto;padding:25px}
-h1,h2{font-family:'Dancing Script',cursive;font-weight:300}
+.container{max-width:900px;margin:auto;padding:20px}
+h1,h2{font-family:'Dancing Script',cursive}
 
-/* ===== رسالة البداية ===== */
-#intro{
- position:fixed;
- inset:0;
- background:rgba(0,0,0,.7);
- display:flex;
- align-items:center;
- justify-content:center;
- z-index:100;
- pointer-events:none;
+/* 🎬 مقدمة */
+#cinema{
+ position:fixed;inset:0;
+ background:rgba(0,0,0,.85);
+ display:flex;align-items:center;justify-content:center;
+ z-index:200;pointer-events:none;
 }
-#intro .box{
- background:white;
- color:#333;
- padding:25px;
- border-radius:15px;
- max-width:320px;
- animation:fade 1s ease;
+#cinema p{
+ font-size:20px;margin:12px 0;
+ animation:fade 1s forwards;
+ opacity:0;
 }
+#cinema p:nth-child(1){animation-delay:.5s}
+#cinema p:nth-child(2){animation-delay:2s}
+#cinema p:nth-child(3){animation-delay:3.5s}
+@keyframes fade{to{opacity:1}}
 
-@keyframes fade{
- from{opacity:0;transform:translateY(20px)}
- to{opacity:1}
-}
-
-/* ===== أقسام ===== */
-.story{
- background:var(--glass);
- padding:25px;
- border-radius:18px;
- margin:40px 0;
- box-shadow:0 10px 30px rgba(0,0,0,.35);
-}
-
-/* ===== شريط التنقل ===== */
-.nav{
- display:flex;
- justify-content:center;
- gap:12px;
- flex-wrap:wrap;
-}
-.nav button{
- padding:10px 18px;
- border-radius:22px;
- border:none;
- background:rgba(255,255,255,.25);
- color:white;
- cursor:pointer;
- transition:.3s;
-}
-.nav button.active{
- background:white;
- color:#6b21a8;
-}
-
-/* ===== عدّاد ===== */
+/* ⏳ عداد */
 #counter{
- display:flex;
- justify-content:center;
- gap:15px;
- margin:25px 0;
- flex-wrap:wrap;
+ display:flex;justify-content:center;gap:12px;flex-wrap:wrap;
 }
 .timeBox{
  background:rgba(255,255,255,.25);
- padding:15px 20px;
- border-radius:16px;
- min-width:90px;
-}
-.timeBox span{
- display:block;
- font-size:26px;
- font-weight:bold;
-}
-.timeBox small{
- opacity:.85;
+ padding:12px 18px;border-radius:14px;
 }
 
-/* ===== Slider ===== */
+/* 🧭 تنقل */
+.nav{
+ display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
+}
+.nav button{
+ padding:10px 16px;border-radius:20px;border:none;
+ background:rgba(255,255,255,.25);color:white;cursor:pointer;
+}
+.nav button.active{background:white;color:#6b21a8}
+
+/* 📦 أقسام */
+.story{
+ background:var(--glass);
+ padding:20px;border-radius:18px;margin:30px 0;
+}
+
+/* 🖼️ صور */
 .slider{
- position:relative;
- overflow:hidden;
- border-radius:18px;
+ position:relative;overflow:hidden;border-radius:18px;
+ height:260px;
 }
 .slides{
- display:flex;
- transition:.5s ease;
+ display:flex;height:100%;transition:.4s ease;
 }
 .slides img{
- width:100%;
- flex-shrink:0;
- cursor:pointer;
+ width:100%;height:100%;object-fit:cover;cursor:pointer;
 }
 .arrow{
- position:absolute;
- top:50%;
- transform:translateY(-50%);
+ position:absolute;top:50%;transform:translateY(-50%);
  background:rgba(0,0,0,.5);
- border:none;
- color:white;
- font-size:22px;
- padding:10px 14px;
- cursor:pointer;
- border-radius:50%;
+ border:none;color:white;font-size:22px;
+ padding:8px 12px;border-radius:50%;
 }
 .arrow.left{left:10px}
 .arrow.right{right:10px}
 
-/* ===== Lightbox ===== */
+/* 🔍 تكبير */
 #lightbox{
- position:fixed;
- inset:0;
- background:rgba(0,0,0,.9);
- display:none;
- align-items:center;
- justify-content:center;
- z-index:200;
+ position:fixed;inset:0;background:rgba(0,0,0,.9);
+ display:none;align-items:center;justify-content:center;z-index:300;
 }
-#lightbox img{
- max-width:90%;
- max-height:90%;
- border-radius:15px;
+#lightbox img{max-width:90%;max-height:90%}
+
+/* 🌍 لغة */
+#lang{
+ position:fixed;top:15px;left:15px;
+ background:white;color:#333;padding:8px 12px;
+ border-radius:10px;cursor:pointer;z-index:50;
 }
 
-/* ===== لغة ===== */
-#lang{
+/* 💜 قلوب */
+.heart{
  position:fixed;
- top:15px;
- left:15px;
- background:white;
- color:#333;
- padding:8px 12px;
- border-radius:10px;
- cursor:pointer;
- z-index:50;
+ bottom:-20px;
+ width:18px;height:18px;
+ background:pink;
+ transform:rotate(45deg);
+ animation:float 8s linear forwards;
+ opacity:.6;
+}
+.heart::before,.heart::after{
+ content:"";
+ position:absolute;
+ width:18px;height:18px;
+ background:pink;
+ border-radius:50%;
+}
+.heart::before{top:-9px}
+.heart::after{left:9px}
+
+@keyframes float{
+ to{transform:translateY(-120vh) rotate(45deg);opacity:0}
+}
+
+/* 📱 موبايل */
+@media(max-width:600px){
+ .slider{height:220px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- 💜 رسالة البداية -->
-<div id="intro">
- <div class="box">
-  <h2>💜 أهلاً بكِ</h2>
-  <p>هذا المكان صُنع لأنكِ أنتِ…</p>
+<!-- 🎬 مقدمة -->
+<div id="cinema">
+ <div>
+  <p id="c1">💜 أهلاً بكِ</p>
+  <p id="c2">هذا المكان صُنع لأنكِ أنتِ</p>
+  <p id="c3">وهذه قصتنا…</p>
  </div>
 </div>
 
-<!-- 🌍 اللغة -->
 <div id="lang" onclick="toggleLang()">🌍</div>
 
 <div class="container">
 
 <h1 id="title">Our Love Story 💜</h1>
 
-<!-- ⏳ العدّاد -->
 <div id="counter">
- <div class="timeBox"><span id="days">0</span><small>يوم</small></div>
- <div class="timeBox"><span id="hours">0</span><small>ساعة</small></div>
- <div class="timeBox"><span id="minutes">0</span><small>دقيقة</small></div>
+ <div class="timeBox"><span id="days">0</span><div id="dL">يوم</div></div>
+ <div class="timeBox"><span id="hours">0</span><div id="hL">ساعة</div></div>
+ <div class="timeBox"><span id="minutes">0</span><div id="mL">دقيقة</div></div>
 </div>
 
-<!-- التنقل -->
 <div class="nav">
- <button class="active" onclick="showSection('story',this)">📖 قصتنا</button>
- <button onclick="showSection('gallery',this)">🖼️ صورنا</button>
- <button onclick="showSection('reasons',this)">💜 الأسباب</button>
+ <button class="active" onclick="show('story',this)" id="n1">📖 قصتنا</button>
+ <button onclick="show('gallery',this)" id="n2">🖼️ صورنا</button>
+ <button onclick="show('reasons',this)" id="n3">💜 الأسباب</button>
 </div>
 
-<!-- قصتنا -->
 <div class="story" id="story">
- <p id="storyText">
-  هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜
- </p>
+ <p id="storyText">هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜</p>
 </div>
 
-<!-- الصور -->
 <div class="story hidden" id="gallery">
- <div class="slider" ontouchstart="startTouch(event)" ontouchend="endTouch(event)">
+ <div class="slider" ontouchstart="ts(event)" ontouchend="te(event)">
   <div class="slides" id="slides">
-   <img src="images/gallery/1.jpg" onclick="openImg(this)">
-   <img src="images/gallery/2.jpg" onclick="openImg(this)">
-   <img src="images/gallery/3.jpg" onclick="openImg(this)">
-   <img src="images/gallery/4.jpg" onclick="openImg(this)">
-   <img src="images/gallery/5.jpg" onclick="openImg(this)">
-   <img src="images/gallery/6.jpg" onclick="openImg(this)">
-   <img src="images/gallery/7.jpg" onclick="openImg(this)">
-   <img src="images/gallery/8.jpg" onclick="openImg(this)">
-   <img src="images/gallery/9.jpg" onclick="openImg(this)">
-   <img src="images/gallery/10.jpg" onclick="openImg(this)">
+   <img src="images/gallery/1.jpg"><img src="images/gallery/2.jpg">
+   <img src="images/gallery/3.jpg"><img src="images/gallery/4.jpg">
+   <img src="images/gallery/5.jpg"><img src="images/gallery/6.jpg">
+   <img src="images/gallery/7.jpg"><img src="images/gallery/8.jpg">
+   <img src="images/gallery/9.jpg"><img src="images/gallery/10.jpg">
   </div>
   <button class="arrow left" onclick="prev()">❮</button>
   <button class="arrow right" onclick="next()">❯</button>
  </div>
 </div>
 
-<!-- الأسباب -->
 <div class="story hidden" id="reasons">
  <ol id="reasonsList"></ol>
 </div>
 
 </div>
 
-<!-- Lightbox -->
 <div id="lightbox" onclick="this.style.display='none'">
  <img id="lightboxImg">
 </div>
 
 <script>
-/* ===== رسالة البداية ===== */
-setTimeout(()=>intro.style.display="none",5000);
+/* مقدمة */
+setTimeout(()=>cinema.style.display="none",6000);
 
-/* ===== العدّاد ===== */
-// تاريخ الارتباط: 29-6-2025 الساعة 02:34 صباحًا
-const startDate = new Date(2025,5,29,2,34,0);
+/* عداد */
+const start=new Date(2025,5,29,2,34);
+setInterval(()=>{
+ let d=Math.floor((new Date()-start)/60000);
+ days.textContent=Math.floor(d/1440);
+ hours.textContent=Math.floor(d%1440/60);
+ minutes.textContent=d%60;
+},1000);
 
-function updateCounter(){
- const now = new Date();
- let diff = Math.floor((now - startDate) / 1000);
-
- if(diff < 0) diff = 0;
-
- const days = Math.floor(diff / 86400);
- diff %= 86400;
- const hours = Math.floor(diff / 3600);
- diff %= 3600;
- const minutes = Math.floor(diff / 60);
-
- document.getElementById("days").textContent = days;
- document.getElementById("hours").textContent = hours;
- document.getElementById("minutes").textContent = minutes;
-}
-setInterval(updateCounter,1000);
-updateCounter();
-
-/* ===== التنقل ===== */
-function showSection(id,btn){
- ["story","gallery","reasons"].forEach(s=>{
-  document.getElementById(s).classList.add("hidden");
- });
+/* تنقل */
+function show(id,b){
+ ["story","gallery","reasons"].forEach(s=>document.getElementById(s).classList.add("hidden"));
  document.getElementById(id).classList.remove("hidden");
- document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
- btn.classList.add("active");
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+ b.classList.add("active");
 }
 
-/* ===== Slider ===== */
-let index=0;
-function updateSlide(){
- slides.style.transform = `translateX(-${index*100}%)`;
-}
-function next(){
- index=(index+1)%10;
- updateSlide();
-}
-function prev(){
- index=(index+9)%10;
- updateSlide();
-}
-let touchX=0;
-function startTouch(e){
- touchX = e.touches[0].clientX;
-}
-function endTouch(e){
- const dx = e.changedTouches[0].clientX - touchX;
- if(dx > 50) prev();
- else if(dx < -50) next();
-}
+/* Slider */
+let i=0,x0=0;
+function update(){slides.style.transform=`translateX(-${i*100}%)`}
+function next(){i=(i+1)%10;update()}
+function prev(){i=(i+9)%10;update()}
+function ts(e){x0=e.touches[0].clientX}
+function te(e){let dx=e.changedTouches[0].clientX-x0;if(dx>50)prev();else if(dx<-50)next();}
 
-/* ===== Lightbox ===== */
-function openImg(img){
- lightboxImg.src = img.src;
- lightbox.style.display="flex";
-}
+/* 💜 قلوب ناعمة */
+setInterval(()=>{
+ const h=document.createElement("div");
+ h.className="heart";
+ h.style.left=Math.random()*100+"vw";
+ h.style.animationDuration=(6+Math.random()*4)+"s";
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),10000);
+},900);
 
-/* ===== الأسباب (100) ===== */
-const reasons=[
-"لأنك عالمي","لأنك راحتي","لأن صوتك يهدئ قلبي","لأنك تفهمينني دون كلام",
-"لأنك اخترتني","لأنك تشبهين قلبي","لأنك صادقة","لأنك جميلة من الداخل",
-"لأنك حلمي","لأنك الأمان","لأنك ضحكتي","لأنك سندي","لأنك حنونة",
-"لأنك مختلفة","لأنك قريبة","لأنك صبورة","لأنك قوية","لأنك تحبين بصدق",
-"لأنك تشاركينني كل شيء","لأنك ملجئي","لأنك فرحي","لأنك أملي",
-"لأنك عالمي الصغير","لأنك تشبهينني","لأنك تحترمينني","لأنك تفاجئين قلبي",
-"لأنك حاضرة دائمًا","لأنك صديقة","لأنك حبيبتي","لأنك أختي",
-"لأنك تجعلينني أفضل","لأنك تلهمينني","لأنك تضحكين قلبي",
-"لأنك تهتمين","لأنك صادقة معي","لأنك صبورة عليّ",
-"لأنك تحبين التفاصيل","لأنك تحبينني كما أنا",
-"لأنك تشعرين بي","لأنك تعطين بلا مقابل",
-"لأنك نور أيامي","لأنك فرحتي",
-"لأنك أمنيتي","لأنك كل شيء",
-"لأنك تجعلين العالم أهدأ",
-"لأنك تشبهين الحب","لأنك بيت",
-"لأنك السلام","لأنك الدفء",
-"لأنك تبتسمين لي","لأنك لا تتركين يدي",
-"لأنك تساندينني","لأنك تسمعينني",
-"لأنك تفهمين صمتي","لأنك تحمين قلبي",
-"لأنك صادقة بحبك","لأنك نعمة",
-"لأنك اختياري","لأنك راحتي النفسية",
-"لأنك تعطين معنى للأيام",
-"لأنك تجعلينني أبتسم بلا سبب",
-"لأنك موجودة","لأنك أنتِ",
-"لأنك البداية والنهاية"
-];
+/* 🌍 أسباب 100 */
+const AR=[...Array(100)].map((_,i)=>`لأنك السبب رقم ${i+1} في سعادتي`);
+const EN=[...Array(100)].map((_,i)=>`Because you are reason number ${i+1} for my happiness`);
 
-reasons.forEach(r=>{
- const li=document.createElement("li");
- li.textContent=r;
- reasonsList.appendChild(li);
-});
-
-/* ===== لغة ===== */
 let ar=true;
+function renderReasons(){
+ reasonsList.innerHTML="";
+ (ar?AR:EN).forEach(r=>{
+  let li=document.createElement("li");
+  li.textContent=r;
+  reasonsList.appendChild(li);
+ });
+}
 function toggleLang(){
  ar=!ar;
- document.getElementById("storyText").textContent = ar ?
- "هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜" :
+ storyText.textContent=ar?
+ "هنا تبدأ حكايتنا… من لحظة بسيطة صارت عمر كامل 💜":
  "Here begins our story… a simple moment that became a lifetime 💜";
+ dL.textContent=ar?"يوم":"Days";
+ hL.textContent=ar?"ساعة":"Hours";
+ mL.textContent=ar?"دقيقة":"Minutes";
+ n1.textContent=ar?"📖 قصتنا":"📖 Our Story";
+ n2.textContent=ar?"🖼️ صورنا":"🖼️ Our Photos";
+ n3.textContent=ar?"💜 الأسباب":"💜 Reasons";
+ c1.textContent=ar?"💜 أهلاً بكِ":"💜 Welcome";
+ c2.textContent=ar?"هذا المكان صُنع لأنكِ أنتِ":"This place was made for you";
+ c3.textContent=ar?"وهذه قصتنا…":"And this is our story…";
+ renderReasons();
 }
+renderReasons();
 </script>
 
 </body>
 </html>
+
+
+
 
 
 
